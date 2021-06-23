@@ -80,7 +80,18 @@ export default function App() {
       //   const room = data.room;
       setRoom(room);
 
-      database.scores.doc(roomName).set({});
+      database.scores
+        .doc(roomName)
+        .set(
+          {
+            [identity]: 0,
+            finished: false,
+          },
+          { merge: true }
+        )
+        .then(() => {
+          console.log("insertion successful");
+        });
     } catch (err) {
       console.log(err);
     }
