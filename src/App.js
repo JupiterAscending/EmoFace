@@ -1,11 +1,12 @@
 import "./App.scss";
-import React, { useState, useRef, Fragment } from "react";
+import React, { useState, useRef, Fragment, useEffect } from "react";
 import Room from "./Room";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import Hidden from "@material-ui/core/Hidden";
 import { makeStyles } from "@material-ui/core/styles";
+import { database } from "./firebase";
 
 import Prompt from "./components/Prompt";
 import Video from "./components/Video";
@@ -40,6 +41,15 @@ export default function App() {
   const inputRef = useRef();
   const classes = useStyles();
 
+  useEffect(() => {
+    database.test.get().then((snapshot) => {
+      // console.log(snapshot);
+      snapshot.docs.map((s) => console.log(s.data()));
+    });
+
+    // database.test((snapshot))
+  }, []);
+
   // console.log({ identity, room, roomName });
 
   async function joinRoom() {
@@ -68,8 +78,9 @@ export default function App() {
       });
       console.log("this is rooom ----------", room);
       //   const room = data.room;
-
       setRoom(room);
+
+      database.scores.doc(roomName).set({});
     } catch (err) {
       console.log(err);
     }
