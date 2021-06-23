@@ -11,6 +11,9 @@ export default function Participant ({
 	setAnalysed1,
 	isAnalysed2,
 	setAnalysed2,
+	prompt,
+	count,
+	setCount,
 }) {
 	const existingPublications = Array.from(participant.tracks.values());
 	const existingTracks = existingPublications.map((publication) => publication.track);
@@ -20,35 +23,8 @@ export default function Participant ({
 	const [ video, setVideo ] = useState("");
 	const [ isReady, setReady ] = useState(false);
 	const [ isCapture, setCapture ] = useState(false);
-	const [ result1, setResult_p1 ] = useState([
-		{
-			expressions: {
-				angry: 0,
-				disgusted: 0,
-				fearful: 0,
-				happy: 0,
-				neutral: 0,
-				sad: 0,
-				surprised: 0,
-			},
-		},
-	]);
-
-	const [ result2, setResult_p2 ] = useState([
-		{
-			expressions: {
-				angry: 0,
-				disgusted: 0,
-				fearful: 0,
-				happy: 0,
-				neutral: 0,
-				sad: 0,
-				surprised: 0,
-			},
-		},
-	]);
-
-	console.log(result1);
+	const [ result1, setResult_p1 ] = useState();
+	const [ result2, setResult_p2 ] = useState();
 	const [ canvas, setCanvas ] = useState();
 
 	useEffect(() => {
@@ -66,10 +42,12 @@ export default function Participant ({
 		setCanvas(document.getElementById(name + "-canvas"));
 		setVideo(document.getElementById(name));
 		setReady(true);
+		setCount(count + 1);
+
 	}
 	function capture () {
-		let canvasSizeX = 300; //canvasの幅
-		let canvasSizeY = canvasSizeX * video.videoHeight / video.videoWidth; //canvasの高さ
+		let canvasSizeX = 100; //canvasの幅
+		let canvasSizeY = 100; //canvasの高さ
 		canvas.getContext("2d").drawImage(video, 0, 0, canvasSizeX, canvasSizeY); //videoタグの「今」の状態をcanvasに描写
 		setCapture(true);
 	}
@@ -82,12 +60,13 @@ export default function Participant ({
 			.withFaceExpressions();
 
 		console.log(detectionsWithExpressions);
+		// console.log(prompt);
 
-		if (isAnalysed1 === false) {
+		if (isAnalysed1 === false && detectionsWithExpressions.length !== 0) {
 			console.log("setting to result1");
 			setAnalysed1(true);
 			setResult_p1(detectionsWithExpressions);
-		} else {
+		} else if (isAnalysed2 === false && detectionsWithExpressions.length !== 0) {
 			console.log("setting to result2");
 			setAnalysed2(true);
 			setResult_p2(detectionsWithExpressions);
@@ -97,14 +76,15 @@ export default function Participant ({
 	console.log(canvas, "this is canvas");
 
 	return (
-		<div>
+		<div className="video-container">
 			<div>
 				{isAnalysed1 === true ? "true" : "false"}
 				{isAnalysed2 === true ? "true" : "false"}
+				{count}
 
 				{tracks.map((track) => (
 					<div>
-						<canvas id={participant.identity + "-canvas"} />
+						<canvas width="150" id={participant.identity + "-canvas"} />
 					</div>
 				))}
 
@@ -118,12 +98,13 @@ export default function Participant ({
 					<p>Please click the Set Button</p>
 				)}
 			</div>
-			<div className="participant" id={participant.identity + "div"}>
+			<div width="100px" className="participant" id={participant.identity + "div"}>
 				<div className="identity">{participant.identity}</div>
 				{tracks.map((track) => <Track key={track} participant={participant} track={track} />)}
 			</div>
-			{result1[0].expressions ? result1[0].expressions.happy : "nothing"}
-			{result2[0].expressions ? result2[0].expressions.happy : "nothing"}
+			<br />
+			<p>{result1 ? result1[0].expressions.happy : "nothing"}</p>
+			<p>{result2 ? result2[0].expressions.happy : "nothing"}</p>
 		</div>
 	);
 }
