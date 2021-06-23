@@ -18,50 +18,21 @@ export default function App () {
 	const [ roomName, setRoomName ] = useState("");
 	const inputRef = useRef();
 
-	async function joinRoom () {
-		try {
-			const response = await fetch(`https://video-sample-jp-3971-dev.twil.io/video-token`, {
-				method: "POST",
-				headers: {
-					"content-type": "application/json",
-				},
-				body: JSON.stringify({
-					identity: identity,
-					room_name: roomName,
-				}),
-			});
-			const data = await response.json();
-			console.log(`token: ${data.accessToken}`);
-			console.log(`room: ${data.room}`);
-			// console.log(`roomSid: ${roomSid}`);
-			const room = await connect(data.accessToken, {
-				room: data.room,
-				audio: true,
-				video: true,
-			});
-			console.log("this is rooom ----------", room);
-			//   const room = data.room;
+	// function returnToLobby () {
+	// 	setRoom(null);
+	// }
 
-			setRoom(room);
-		} catch (err) {
-			console.log(err);
-		}
-	}
-	function returnToLobby () {
-		setRoom(null);
-	}
-
-	function removePlaceholderText () {
-		inputRef.current.placeholder = "";
-	}
-	function updateIdentity (event) {
-		setIdentity(event.target.value);
-	}
-	function updateRoomName (e) {
-		// console.log(e.target.value);
-		setRoomName(e.target.value);
-	}
-	const disabled = identity === "" ? true : false;
+	// function removePlaceholderText () {
+	// 	inputRef.current.placeholder = "";
+	// }
+	// function updateIdentity (event) {
+	// 	setIdentity(event.target.value);
+	// }
+	// function updateRoomName (e) {
+	// 	// console.log(e.target.value);
+	// 	setRoomName(e.target.value);
+	// }
+	// const disabled = identity === "" ? true : false;
 
 	useEffect(() => {
 		database.test.get().then((snapshot) => {
