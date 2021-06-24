@@ -15,8 +15,10 @@ export default function Room({ room, returnToLobby }) {
   );
   const [score1, setScore1] = useState(0);
   const [score2, setScore2] = useState(0);
+  const [username2, setusername2] = useState("");
   useEffect(() => {
-    // console.log("this is room in Room component", room);
+    console.log("REMOTE PARTICIPANTS INSIDE ROOM", remoteParticipants);
+    console.log("this is room in Room component", room);
     room.on("participantConnected", (participant) => addParticipant(participant));
     room.on("participantDisconnected", (participant) => removeParticipant(participant));
 
@@ -38,6 +40,7 @@ export default function Room({ room, returnToLobby }) {
       const userArr = Array.from(room.participants.values());
       if (userArr.length > 0) {
         user2name = userArr[0].identity;
+        setusername2(user2name);
         user2score = doc.data()[user2name];
         setScore2(user2score);
         console.log("SCORE2 SET WITH,", user2score);
@@ -87,45 +90,47 @@ export default function Room({ room, returnToLobby }) {
 
   return (
     <React.Fragment>
-      <h1 class="text-3xl text-white ml-3">You are in ROOM: {room.name}</h1>
-      <p> これがプロンプトだよーーー{prompt}</p>
-      <div>
-        <p>
-          {" "}
-          {room.localParticipant.identity}のスコア: {score1}
-          スコア2: {score2}
-        </p>
-      </div>
+      <div class="border-2 flex justify-content">
+        <h1 class="text-3xl text-white ml-3">You are in ROOM: {room.name}</h1>
+        <p> これがプロンプトだよーーー{prompt}</p>
+        <div>
+          <p>
+            {" "}
+            {room.localParticipant.identity}のスコア: {score1}
+            {username2}のスコア2: {score2}
+          </p>
+        </div>
 
-      <div class="grid grid-cols-1 gap-2 md:grid-cols-2 col-start-1">
-        <Participant
-          isAnalysed1={isAnalysed1}
-          setAnalysed1={setAnalysed1}
-          isAnalysed2={isAnalysed2}
-          setAnalysed2={setAnalysed2}
-          key={room.localParticipant.identity}
-          localParticipant="true"
-          participant={room.localParticipant}
-          prompt={prompt}
-          count={count}
-          setCount={setCount}
-          room={room}
-          setPrompt={setPrompt}
-        />
-        {remoteParticipants.map((participant) => (
+        <div class="grid grid-cols-1 gap-2 md:grid-cols-2 col-start-1">
           <Participant
-            key={participant.identity}
-            participant={participant}
             isAnalysed1={isAnalysed1}
             setAnalysed1={setAnalysed1}
             isAnalysed2={isAnalysed2}
             setAnalysed2={setAnalysed2}
+            key={room.localParticipant.identity}
+            localParticipant="true"
+            participant={room.localParticipant}
+            prompt={prompt}
             count={count}
             setCount={setCount}
             room={room}
             setPrompt={setPrompt}
           />
-        ))}
+          {remoteParticipants.map((participant) => (
+            <Participant
+              key={participant.identity}
+              participant={participant}
+              isAnalysed1={isAnalysed1}
+              setAnalysed1={setAnalysed1}
+              isAnalysed2={isAnalysed2}
+              setAnalysed2={setAnalysed2}
+              count={count}
+              setCount={setCount}
+              room={room}
+              setPrompt={setPrompt}
+            />
+          ))}
+        </div>
       </div>
       <button id="leaveRoom" onClick={leaveRoom}>
         Leave Room

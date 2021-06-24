@@ -84,7 +84,7 @@ export default function Participant({
   function calculateScore(detectionsWithExpressions) {
     const float = parseFloat(detectionsWithExpressions[0].expressions.happy);
     const multiplied = float * 100;
-    const score = Math.round(multiplied);
+    const score = multiplied.toFixed(2);
     console.log({ float, multiplied, score });
     return score;
   }
