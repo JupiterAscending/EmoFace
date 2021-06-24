@@ -8,18 +8,18 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "autoprefixer": "^10.2.6",
+    "autoprefixer": "^9.8.6",
     "canvas": "^2.8.0",
     "face-api.js": "^0.22.2",
     "firebase": "^8.6.8",
     "node-sass": "^4.14.1",
-    "postcss": "^8.3.5",
+    "postcss": "^7.0.36",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.0",
-    "tailwindcss": "^2.2.4",
     "twilio-video": "^2.15.1",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.2"
   },
   "scripts": {
     "start": "craco start",
