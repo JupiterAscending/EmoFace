@@ -19,5 +19,5 @@ export default function Track ({ track, participant }) {
 			// console.log("this is ref---", ref);
 		}
 	});
-	return <div className="track" ref={ref} />;
+	return <div className="track ml-40" ref={ref} />;
 }
