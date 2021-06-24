@@ -21,19 +21,6 @@ html {
   color: white;
 }
 
-.lobby {
-  margin-top: 100px;
-  text-align: center;
-  font-size: 1.25em;
-}
-
-.participants {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  margin-left: -0.75vw;
-}
-
 .participant {
   box-sizing: border-box;
   position: relative;
@@ -56,10 +43,6 @@ html {
   padding-left: 15px;
   box-sizing: border-box;
   z-index: 10;
-}
-
-.title {
-  text-align: center;
 }
 
 video {

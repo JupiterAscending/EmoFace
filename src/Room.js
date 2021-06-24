@@ -3,13 +3,10 @@ import Participant from "./Participant";
 import { database } from "./firebase";
 import "./Room.scss";
 
-// import { RemoteParticipant } from "twilio-video";
-// import "./App.scss";
-
 export default function Room({ room, returnToLobby }) {
   const [isAnalysed1, setAnalysed1] = useState(false);
   const [isAnalysed2, setAnalysed2] = useState(false);
-  const [prompt, setPrompt] = useState("");
+  const [prompt, setPrompt] = useState("miho");
   const [count, setCount] = useState(0);
   const [remoteParticipants, setRemoteParticipants] = useState(
     Array.from(room.participants.values())
@@ -32,10 +29,7 @@ export default function Room({ room, returnToLobby }) {
       console.log("room inside realtimeupdate-----", room);
       const user1score = doc.data()[room.localParticipant.identity];
       setScore1(user1score);
-      //   const user2name = remoteParticipants.map((participant) => {
-      //     // console.log("PARTICIPANT", participant);
-      //     return participant.identity;
-      //   });
+
       let user2name;
       let user2score = 0;
       const userArr = Array.from(room.participants.values());
@@ -46,9 +40,6 @@ export default function Room({ room, returnToLobby }) {
         setScore2(user2score);
         console.log("SCORE2 SET WITH,", user2score);
       }
-      //   console.log("USER2----", user2name);
-      //   console.log({ user1score, user2score });
-      //   console.log({ user1score });
     });
 
     return () => {
@@ -59,18 +50,36 @@ export default function Room({ room, returnToLobby }) {
   // useEffect count が変わったとき動作、 if count === 2 firebaseにprompt を入れる。
   // realtimeでprompt表示
   useEffect(() => {
-    console.log("useEffect count-----", count);
-    if (count === 2) {
+    if (count >= 2) {
+      console.count("generatePrompt running-----");
+      //   const prompt = generatePrompt();
+      console.log("prompt------", prompt);
       database.scores
         .doc(room.name)
         .update({
-          prompt: "happy",
+          prompt: prompt,
         })
         .then(() => {
-          console.log("prompt updated!!");
+          console.log("prompt updated!!", prompt);
         });
     }
   }, [count]);
+
+  function generatePrompt() {
+    const prompts = [
+      "angry",
+      "disgusted",
+      "fearful",
+      "happy",
+      "neutral",
+      "sad",
+      "surprised",
+    ];
+    const index = Math.floor(Math.random() * (prompts.length - 1));
+    const prompt = prompts[index];
+    setPrompt(prompt);
+    return prompt;
+  }
 
   function addParticipant(participant) {
     console.log(`${participant.identity} has joined the room.`);
@@ -119,6 +128,7 @@ export default function Room({ room, returnToLobby }) {
 
       <div class="grid grid-cols-1 gap-2 md:grid-cols-2 col-start-1 content-center">
         <Participant
+          generatePrompt={generatePrompt}
           isAnalysed1={isAnalysed1}
           setAnalysed1={setAnalysed1}
           isAnalysed2={isAnalysed2}
@@ -134,6 +144,7 @@ export default function Room({ room, returnToLobby }) {
         />
         {remoteParticipants.map((participant) => (
           <Participant
+            generatePrompt={generatePrompt}
             key={participant.identity}
             participant={participant}
             isAnalysed1={isAnalysed1}
@@ -142,6 +153,7 @@ export default function Room({ room, returnToLobby }) {
             setAnalysed2={setAnalysed2}
             count={count}
             setCount={setCount}
+            prompt={prompt}
             room={room}
             setPrompt={setPrompt}
           />
