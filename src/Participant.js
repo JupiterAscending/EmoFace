@@ -25,6 +25,7 @@ export default function Participant({
   const [video, setVideo] = useState("");
   const [isReady, setReady] = useState(false);
   const [isCapture, setCapture] = useState(false);
+
   const [result1, setResult_p1] = useState([
     {
       expressions: {
@@ -80,6 +81,14 @@ export default function Participant({
     setCapture(true);
   }
 
+  function calculateScore(detectionsWithExpressions) {
+    const float = parseFloat(detectionsWithExpressions[0].expressions.happy);
+    const multiplied = float * 100;
+    const score = Math.round(multiplied);
+    console.log({ float, multiplied, score });
+    return score;
+  }
+
   async function analyse() {
     await faceapi.nets.tinyFaceDetector.load("/models");
     await faceapi.nets.faceExpressionNet.load("/models");
@@ -93,12 +102,14 @@ export default function Participant({
       console.log("setting to result1");
       setAnalysed1(true);
       setResult_p1(detectionsWithExpressions);
-      const score =
-        Math.floor(parseFloat(detectionsWithExpressions[0].expressions.happy)) * 100;
-      console.log("score-----", score);
-      database.scores.doc(room.name).set({
-        [participant.identity]: score,
-      });
+      const score = calculateScore(detectionsWithExpressions);
+      console.log("score1-----", score);
+      database.scores.doc(room.name).set(
+        {
+          [participant.identity]: score,
+        },
+        { merge: true }
+      );
 
       //firebaseにスコア投げる
       // detectionsWithExpressions[0].expressions.happy
@@ -110,12 +121,14 @@ export default function Participant({
       //firebaseにスコア投げる
       // detectionsWithExpressions[0].expressions.happy
       //float & round 小数点なし　* 100
-      const score =
-        Math.floor(parseFloat(detectionsWithExpressions[0].expressions.happy)) * 100;
-      console.log("score-----", score);
-      database.scores.doc(room.name).set({
-        [participant.identity]: score,
-      });
+      const score2 = calculateScore(detectionsWithExpressions);
+      console.log("score2-----", score2);
+      database.scores.doc(room.name).set(
+        {
+          [participant.identity]: score2,
+        },
+        { merge: true }
+      );
     }
   }
 
@@ -124,14 +137,7 @@ export default function Participant({
   return (
     <div>
       <div>
-        {isAnalysed1 === true ? "true" : "false"}
-        {isAnalysed2 === true ? "true" : "false"}
-
-        {tracks.map((track) => (
-          <div>
-            <canvas id={participant.identity + "-canvas"} />
-          </div>
-        ))}
+        <canvas width="300px" height="300px" id={participant.identity + "-canvas"} />
 
         <button onClick={videoCapture}>Set</button>
         {isReady === true ? (
@@ -147,13 +153,15 @@ export default function Participant({
           <p>Please click the Set Button</p>
         )}
       </div>
-      <div className="participant" id={participant.identity + "div"}>
-        <div className="identity">{participant.identity}</div>
+      <div class="h-1/2" id={participant.identity + "div"}>
+        <h2 class="text-2xl text-center text-white">{participant.identity}</h2>
         {tracks.map((track) => (
-          <Track key={track} participant={participant} track={track} />
+          <Track class="h-1/2" key={track} participant={participant} track={track} />
         ))}
       </div>
 
+      {/* <h1>result1[0].expressions &&Result 1: {result1}</h1>
+      <h1>result2[0].expressions && Result 2: {result2}</h1> */}
       {result1[0].expressions ? result1[0].expressions.happy : "nothing"}
       {result2[0].expressions ? result2[0].expressions.happy : "nothing"}
     </div>

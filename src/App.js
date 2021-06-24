@@ -69,7 +69,7 @@ export default function App() {
         audio: true,
         video: true,
       });
-      console.log("this is rooom ----------", room);
+      // console.log("this is rooom ----------", room);
       //   const room = data.room;
       setRoom(room);
 

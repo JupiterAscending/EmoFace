@@ -13,16 +13,38 @@ export default function Room({ room, returnToLobby }) {
   const [remoteParticipants, setRemoteParticipants] = useState(
     Array.from(room.participants.values())
   );
+  const [score1, setScore1] = useState(0);
+  const [score2, setScore2] = useState(0);
   useEffect(() => {
-    console.log("this is room in Room component", room);
+    // console.log("this is room in Room component", room);
     room.on("participantConnected", (participant) => addParticipant(participant));
     room.on("participantDisconnected", (participant) => removeParticipant(participant));
 
     window.addEventListener("beforeunload", leaveRoom);
     database.scores.doc(room.name).onSnapshot((doc) => {
       const currentPrompt = doc.data().prompt;
-      console.log("Realtime update snapshot-----currentPrompt", currentPrompt);
+      console.log("Realtime update snapshot-----", doc.data());
       setPrompt(currentPrompt);
+
+      console.log("room inside realtimeupdate-----", room);
+      const user1score = doc.data()[room.localParticipant.identity];
+      setScore1(user1score);
+      //   const user2name = remoteParticipants.map((participant) => {
+      //     // console.log("PARTICIPANT", participant);
+      //     return participant.identity;
+      //   });
+      let user2name;
+      let user2score = 0;
+      const userArr = Array.from(room.participants.values());
+      if (userArr.length > 0) {
+        user2name = userArr[0].identity;
+        user2score = doc.data()[user2name];
+        setScore2(user2score);
+        console.log("SCORE2 SET WITH,", user2score);
+      }
+      //   console.log("USER2----", user2name);
+      //   console.log({ user1score, user2score });
+      //   console.log({ user1score });
     });
 
     return () => {
@@ -64,12 +86,18 @@ export default function Room({ room, returnToLobby }) {
   }
 
   return (
-    <div className="room">
-      You are in ROOM: {room.name}
-      <div className="participants">
-        <p> これがプロンプトだよーーー{prompt}</p>
-        {count === 2 ? <p id="prompt">{prompt}</p> : ""}
+    <React.Fragment>
+      <h1 class="text-3xl text-white ml-3">You are in ROOM: {room.name}</h1>
+      <p> これがプロンプトだよーーー{prompt}</p>
+      <div>
+        <p>
+          {" "}
+          {room.localParticipant.identity}のスコア: {score1}
+          スコア2: {score2}
+        </p>
+      </div>
 
+      <div class="grid grid-cols-1 gap-2 md:grid-cols-2 col-start-1">
         <Participant
           isAnalysed1={isAnalysed1}
           setAnalysed1={setAnalysed1}
@@ -102,6 +130,6 @@ export default function Room({ room, returnToLobby }) {
       <button id="leaveRoom" onClick={leaveRoom}>
         Leave Room
       </button>
-    </div>
+    </React.Fragment>
   );
 }
