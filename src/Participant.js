@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import * as canvas from "canvas";
 import * as faceapi from "face-api.js";
 import { database } from "./firebase";
+import Loader from "react-loader-spinner";
 
 export default function Participant ({
 	participant,
@@ -25,7 +26,7 @@ export default function Participant ({
 	const [ video, setVideo ] = useState("");
 	const [ isReady, setReady ] = useState(false);
 	const [ isCapture, setCapture ] = useState(false);
-
+	const [ isLoading, setLoading ] = useState(false);
 	const [ result1, setResult_p1 ] = useState([
 		{
 			expressions: {
@@ -54,8 +55,8 @@ export default function Participant ({
 		},
 	]);
 
-	console.log(result1);
 	const [ canvas, setCanvas ] = useState();
+	const [ error, setError ] = useState("");
 
 	useEffect(() => {
 		if (!localParticipant) {
@@ -80,16 +81,22 @@ export default function Participant ({
 		canvas.getContext("2d").drawImage(video, 0, 0, canvasSizeX, canvasSizeY); //videoタグの「今」の状態をcanvasに描写
 		setCapture(true);
 	}
-
 	function calculateScore (detectionsWithExpressions) {
-		const float = parseFloat(detectionsWithExpressions[0].expressions.happy);
-		const multiplied = float * 100;
-		const score = multiplied.toFixed(2);
-		console.log({ float, multiplied, score });
-		return score;
+		if (detectionsWithExpressions[0]) {
+			const float = parseFloat(detectionsWithExpressions[0].expressions.happy);
+			const multiplied = float * 100;
+			const score = multiplied.toFixed(2);
+			console.log({ float, multiplied, score });
+			return score;
+		} else {
+			setLoading(false);
+			setError("Please capture again! Please make sure to take a clear picture!");
+		}
 	}
 
 	async function analyse () {
+		setError("");
+		setLoading(true);
 		await faceapi.nets.tinyFaceDetector.load("/models");
 		await faceapi.nets.faceExpressionNet.load("/models");
 		const detectionsWithExpressions = await faceapi
@@ -99,47 +106,50 @@ export default function Participant ({
 		console.log(detectionsWithExpressions);
 
 		if (isAnalysed1 === false) {
-			console.log("setting to result1");
 			setAnalysed1(true);
 			setResult_p1(detectionsWithExpressions);
 			const score = calculateScore(detectionsWithExpressions);
-			console.log("score1-----", score);
-			database.scores.doc(room.name).set(
-				{
-					[participant.identity]: score,
-				},
-				{ merge: true }
-			);
+
+			if (score) {
+				database.scores.doc(room.name).set(
+					{
+						[participant.identity]: score,
+					},
+					{ merge: true }
+				);
+			} else {
+				console.log("noscore");
+			}
 		} else {
-			console.log("setting to result2");
 			setAnalysed2(true);
 			setResult_p2(detectionsWithExpressions);
 
 			const score2 = calculateScore(detectionsWithExpressions);
 			console.log("score2-----", score2);
-			database.scores.doc(room.name).set(
-				{
-					[participant.identity]: score2,
-				},
-				{ merge: true }
-			);
+			if (score2) {
+				database.scores.doc(room.name).set(
+					{
+						[participant.identity]: score2,
+					},
+					{ merge: true }
+				);
+			} else {
+				console.log("no score!");
+			}
 		}
+		setLoading(false);
 	}
-
-	console.log(canvas, "this is canvas");
 
 	return (
 		<div>
 			<div class="flex justify-center">
 				<canvas width="300px" height="300px" id={participant.identity + "-canvas"} />
 			</div>
-
-
 			<button
 				class="bg-pink-400 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full mb-2"
 				onClick={videoCapture}
 			>
-				Set
+				Game Set
 			</button>
 			{isReady === true ? (
 				<button
@@ -149,7 +159,7 @@ export default function Participant ({
 					Capture Me
 				</button>
 			) : (
-				""
+				<button class="bg-gray-400 text-white font-bold py-2 px-4 rounded-full mb-2"> Capture Me</button>
 			)}
 			{isCapture === true ? (
 				<button
@@ -160,9 +170,24 @@ export default function Participant ({
 					Analyse Me
 				</button>
 			) : (
-				""
+				<button class="bg-gray-400 text-white font-bold py-2 px-4 rounded-full mb-5"> Analyse Me</button>
 			)}
 
+			{error ? (
+				<span class="text-red-300">{error}</span>
+			) : (
+				<span class="text-red-300 invisible">"this is the error place</span>
+			)}
+
+			{isLoading === true ? (
+				<div class="flex justify-center">
+					<Loader type="Circles" color="rgb(244, 114, 182)" height={50} width={50} />
+				</div>
+			) : (
+				<div class="flex justify-center invisible">
+					<Loader type="Circles" color="rgb(244, 114, 182)" height={50} width={50} />
+				</div>
+			)}
 			<div class="h-1/2 content-center" id={participant.identity + "div"}>
 				<h2 class="text-2xl text-center text-white">{participant.identity}</h2>
 				{tracks.map((track) => (

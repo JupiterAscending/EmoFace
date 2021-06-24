@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Participant from "./Participant";
 import { database } from "./firebase";
+import "./Room.scss";
 
 // import { RemoteParticipant } from "twilio-video";
-import "./App.scss";
+// import "./App.scss";
 
 export default function Room ({ room, returnToLobby }) {
 	const [ isAnalysed1, setAnalysed1 ] = useState(false);
@@ -89,21 +90,29 @@ export default function Room ({ room, returnToLobby }) {
 
 	return (
 		<React.Fragment>
-			<span class="text-xs text-white text-right ml-3">You are in ROOM: {room.name}</span>
+			{/* <span class="text-xs text-white text-right ml-3">You are in ROOM: {room.name}</span> */}
 			{prompt ? (
-				<div class="text-3xl text-pink-300 ml-3 text-center">
-					{" "}
+				<div class="mt-3 text-3xl text-pink-300 ml-3 text-center">
 					<span class="mb-2">Make your {prompt} 😁 face!</span>
 					<br />
 					<span class="text-white mt-6">
 						{" "}
-						{room.localParticipant.identity}のスコア: {score1}
+						{room.localParticipant.identity}: {score1} %
 						<br />
-						{username2}: {score2}
+						{username2}: {score2} %
 					</span>
 				</div>
 			) : (
-				""
+				<div class="mt-3 text-3xl text-transparent ml-3 text-center">
+					<span class="mb-2">Prompt will be shown after game set</span>
+					<br />
+					<span class="text-transparent mt-6">
+						{" "}
+						Score
+						<br />
+						Score
+					</span>
+				</div>
 			)}
 			<div />
 
