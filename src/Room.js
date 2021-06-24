@@ -89,33 +89,33 @@ export default function Room({ room, returnToLobby }) {
     returnToLobby();
   }
 
-	return (
-		<React.Fragment>
-			{/* <span class="text-xs text-white text-right ml-3">You are in ROOM: {room.name}</span> */}
-			{prompt ? (
-				<div class="mt-3 text-3xl text-pink-300 ml-3 text-center">
-					<span class="mb-2">Make your {prompt} 😁 face!</span>
-					<br />
-					<span class="text-white mt-6">
-						{" "}
-						{room.localParticipant.identity}: {score1} %
-						<br />
-						{username2}: {score2} %
-					</span>
-				</div>
-			) : (
-				<div class="mt-3 text-3xl text-transparent ml-3 text-center">
-					<span class="mb-2">Prompt will be shown after game set</span>
-					<br />
-					<span class="text-transparent mt-6">
-						{" "}
-						Score
-						<br />
-						Score
-					</span>
-				</div>
-			)}
-			<div />
+  return (
+    <div>
+      {/* <span class="text-xs text-white text-right ml-3">You are in ROOM: {room.name}</span> */}
+      {prompt ? (
+        <div class="mt-3 text-3xl text-pink-300 ml-3 text-center">
+          <span class="mb-2">Make your {prompt} 😁 face!</span>
+          <br />
+          <span class="text-white mt-6">
+            {" "}
+            {room.localParticipant.identity}: {score1} %
+            <br />
+            {username2}: {score2} %
+          </span>
+        </div>
+      ) : (
+        <div class="mt-3 text-3xl text-transparent ml-3 text-center">
+          <span class="mb-2">Prompt will be shown after game set</span>
+          <br />
+          <span class="text-transparent mt-6">
+            {" "}
+            Score
+            <br />
+            Score
+          </span>
+        </div>
+      )}
+      <div />
 
       <div class="grid grid-cols-1 gap-2 md:grid-cols-2 col-start-1 content-center">
         <Participant
@@ -156,6 +156,6 @@ export default function Room({ room, returnToLobby }) {
           Leave Room
         </button>
       </div>
-    </React.Fragment>
+    </div>
   );
 }

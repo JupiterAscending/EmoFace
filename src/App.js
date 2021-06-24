@@ -107,7 +107,7 @@ export default function App() {
   const disabled = identity === "" ? true : false;
 
   return (
-    <div class="bg-blue-900">
+    <div class="bg-blue-900 flex mt-5 justify-center">
       {room === null ? (
         <div>
           <h1 className="text-white text-center text-3xl mb-5">EmoFace 🤪</h1>
