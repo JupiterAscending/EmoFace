@@ -10,6 +10,9 @@
     "@testing-library/user-event": "^12.1.10",
     "autoprefixer": "^9.8.6",
     "canvas": "^2.8.0",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
     "face-api.js": "^0.22.2",
     "firebase": "^8.6.8",
     "node-sass": "^4.14.1",
@@ -23,7 +26,8 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "node server",
+    "hack": "craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
