@@ -12,6 +12,10 @@ export default function Participant({
   setAnalysed1,
   isAnalysed2,
   setAnalysed2,
+  room,
+  setPrompt,
+  count,
+  setCount,
 }) {
   const existingPublications = Array.from(participant.tracks.values());
   const existingTracks = existingPublications.map((publication) => publication.track);
@@ -67,6 +71,7 @@ export default function Participant({
     setCanvas(document.getElementById(name + "-canvas"));
     setVideo(document.getElementById(name));
     setReady(true);
+    setCount(count + 1);
   }
   function capture() {
     let canvasSizeX = 300; //canvasの幅
@@ -88,25 +93,13 @@ export default function Participant({
       console.log("setting to result1");
       setAnalysed1(true);
       setResult_p1(detectionsWithExpressions);
-      const score = Math.round(
-        parseFloat(detectionsWithExpressions[0].expressions.happy)
-      );
+      const score =
+        Math.floor(parseFloat(detectionsWithExpressions[0].expressions.happy)) * 100;
+      console.log("score-----", score);
       database.scores.doc(room.name).set({
-        [participant.identity]: [score],
+        [participant.identity]: score,
       });
-      database.scores
-        .doc(roomName)
-        .set(
-          {
-            [identity]: 0,
-            finished: false,
-            prompt: "",
-          },
-          { merge: true }
-        )
-        .then(() => {
-          console.log("insertion successful");
-        });
+
       //firebaseにスコア投げる
       // detectionsWithExpressions[0].expressions.happy
       //float & round 小数点なし　* 100
@@ -117,6 +110,12 @@ export default function Participant({
       //firebaseにスコア投げる
       // detectionsWithExpressions[0].expressions.happy
       //float & round 小数点なし　* 100
+      const score =
+        Math.floor(parseFloat(detectionsWithExpressions[0].expressions.happy)) * 100;
+      console.log("score-----", score);
+      database.scores.doc(room.name).set({
+        [participant.identity]: score,
+      });
     }
   }
 
