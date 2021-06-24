@@ -20,12 +20,14 @@ export default function Participant({
   const existingPublications = Array.from(participant.tracks.values());
   const existingTracks = existingPublications.map((publication) => publication.track);
   const nonNullTracks = existingTracks.filter((track) => track !== null);
+  console.log({ existingPublications, existingTracks, nonNullTracks });
 
   const [tracks, setTracks] = useState(nonNullTracks);
   const [video, setVideo] = useState("");
   const [isReady, setReady] = useState(false);
   const [isCapture, setCapture] = useState(false);
 
+  console.log("The number of tracks------", tracks.length);
   const [result1, setResult_p1] = useState([
     {
       expressions: {

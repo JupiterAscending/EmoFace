@@ -5,7 +5,7 @@ import React, { useRef, useEffect } from "react";
 export default function Track({ track, participant }) {
   const ref = useRef();
   useEffect(() => {
-    console.count("track running with ", track);
+    // console.count("track running with ", track);
     if (track !== null) {
       const child = track.attach();
       // console.log("this is child---", child);
@@ -15,8 +15,8 @@ export default function Track({ track, participant }) {
       ref.current.classList.add(track.kind);
 
       ref.current.appendChild(child);
-      // console.log("this is ref---", ref);
+      // console.log("this is ref---", ref.current);
     }
-  });
+  }, []);
   return <div width="300px" ref={ref} />;
 }

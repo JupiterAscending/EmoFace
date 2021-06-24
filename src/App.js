@@ -34,14 +34,14 @@ export default function App() {
   // }
   // const disabled = identity === "" ? true : false;
 
-  useEffect(() => {
-    database.test.get().then((snapshot) => {
-      // console.log(snapshot);
-      snapshot.docs.map((s) => console.log(s.data()));
-    });
+  // useEffect(() => {
+  //   database.test.get().then((snapshot) => {
+  //     // console.log(snapshot);
+  //     snapshot.docs.map((s) => console.log(s.data()));
+  //   });
 
-    // database.test((snapshot))
-  }, []);
+  //   // database.test((snapshot))
+  // }, []);
 
   // console.log({ identity, room, roomName });
 
@@ -84,7 +84,7 @@ export default function App() {
           { merge: true }
         )
         .then(() => {
-          console.log("insertion successful");
+          // console.log("insertion successful");
         });
     } catch (err) {
       console.log(err);

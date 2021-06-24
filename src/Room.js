@@ -16,19 +16,23 @@ export default function Room({ room, returnToLobby }) {
   const [score1, setScore1] = useState(0);
   const [score2, setScore2] = useState(0);
   const [username2, setusername2] = useState("");
+  //   console.log("REMOTE PARTICIPANTS INSIDE ROOM", remoteParticipants);
+  //   console.log("this is room in Room component", room);
+
   useEffect(() => {
-    console.log("REMOTE PARTICIPANTS INSIDE ROOM", remoteParticipants);
-    console.log("this is room in Room component", room);
-    room.on("participantConnected", (participant) => addParticipant(participant));
+    room.on("participantConnected", (participant) => {
+      //   console.log("adding participant");
+      addParticipant(participant);
+    });
     room.on("participantDisconnected", (participant) => removeParticipant(participant));
 
     window.addEventListener("beforeunload", leaveRoom);
     database.scores.doc(room.name).onSnapshot((doc) => {
       const currentPrompt = doc.data().prompt;
-      console.log("Realtime update snapshot-----", doc.data());
+      //   console.log("Realtime update snapshot-----", doc.data());
       setPrompt(currentPrompt);
 
-      console.log("room inside realtimeupdate-----", room);
+      //   console.log("room inside realtimeupdate-----", room);
       const user1score = doc.data()[room.localParticipant.identity];
       setScore1(user1score);
       //   const user2name = remoteParticipants.map((participant) => {
@@ -43,7 +47,7 @@ export default function Room({ room, returnToLobby }) {
         setusername2(user2name);
         user2score = doc.data()[user2name];
         setScore2(user2score);
-        console.log("SCORE2 SET WITH,", user2score);
+        // console.log("SCORE2 SET WITH,", user2score);
       }
       //   console.log("USER2----", user2name);
       //   console.log({ user1score, user2score });
@@ -58,7 +62,7 @@ export default function Room({ room, returnToLobby }) {
   // useEffect count が変わったとき動作、 if count === 2 firebaseにprompt を入れる。
   // realtimeでprompt表示
   useEffect(() => {
-    console.log("useEffect count-----", count);
+    // console.log("useEffect count-----", count);
     if (count === 2) {
       database.scores
         .doc(room.name)
