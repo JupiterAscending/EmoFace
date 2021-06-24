@@ -20,14 +20,12 @@ export default function Participant({
   const existingPublications = Array.from(participant.tracks.values());
   const existingTracks = existingPublications.map((publication) => publication.track);
   const nonNullTracks = existingTracks.filter((track) => track !== null);
-  console.log({ existingPublications, existingTracks, nonNullTracks });
 
   const [tracks, setTracks] = useState(nonNullTracks);
   const [video, setVideo] = useState("");
   const [isReady, setReady] = useState(false);
   const [isCapture, setCapture] = useState(false);
 
-  console.log("The number of tracks------", tracks.length);
   const [result1, setResult_p1] = useState([
     {
       expressions: {
@@ -112,17 +110,11 @@ export default function Participant({
         },
         { merge: true }
       );
-
-      //firebaseにスコア投げる
-      // detectionsWithExpressions[0].expressions.happy
-      //float & round 小数点なし　* 100
     } else {
       console.log("setting to result2");
       setAnalysed2(true);
       setResult_p2(detectionsWithExpressions);
-      //firebaseにスコア投げる
-      // detectionsWithExpressions[0].expressions.happy
-      //float & round 小数点なし　* 100
+
       const score2 = calculateScore(detectionsWithExpressions);
       console.log("score2-----", score2);
       database.scores.doc(room.name).set(
@@ -138,36 +130,49 @@ export default function Participant({
 
   return (
     <div>
-      <div>
+      <div class="flex justify-center">
         <canvas width="300px" height="300px" id={participant.identity + "-canvas"} />
-
-        <button onClick={videoCapture}>Set</button>
-        {isReady === true ? (
-          <button onClick={capture}>Capture Me</button>
-        ) : (
-          <p>Please click the Set Button</p>
-        )}
-        {isCapture === true ? (
-          <button id={participant.identity + "-analyse"} onClick={analyse}>
-            Analyse Me
-          </button>
-        ) : (
-          <p>Please click the Set Button</p>
-        )}
       </div>
-      <div class="h-1/2" id={participant.identity + "div"}>
+
+      <button
+        class="bg-pink-400 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full mb-2"
+        onClick={videoCapture}
+      >
+        Set
+      </button>
+      {isReady === true ? (
+        <button
+          class="bg-pink-400 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full mb-2"
+          onClick={capture}
+        >
+          Capture Me
+        </button>
+      ) : (
+        ""
+      )}
+      {isCapture === true ? (
+        <button
+          class="bg-pink-400 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full mb-5"
+          id={participant.identity + "-analyse"}
+          onClick={analyse}
+        >
+          Analyse Me
+        </button>
+      ) : (
+        ""
+      )}
+
+      <div class="h-1/2 content-center" id={participant.identity + "div"}>
         <h2 class="text-2xl text-center text-white">{participant.identity}</h2>
         {tracks.map((track) => (
-          <Track class="h-1/2" key={track} participant={participant} track={track} />
+          <Track
+            class="h-1/2 content-center"
+            key={track}
+            participant={participant}
+            track={track}
+          />
         ))}
       </div>
-
-      {/* <h1>result1[0].expressions &&Result 1: {result1}</h1>
-      <h1>result2[0].expressions && Result 2: {result2}</h1> */}
-      {result1[0].expressions ? result1[0].expressions.happy : "nothing"}
-      {result2[0].expressions ? result2[0].expressions.happy : "nothing"}
     </div>
   );
 }
-
-// realtime data入れるぜ

@@ -27,7 +27,7 @@ If so, press the "Set" button again. Then press the "Set" button again, and the 
 
 The way the application works is as follows.
 
-<p align="center"><img src="public/Twilio-Video.png" width="50%"></p>
+<p align="center"><img src="public/Twilio-Video.png" width="80%"></p>
 
 The video feature of this web app takes advantage of the Twilio Programmable Video feature. Capturing from a video is done by depicting the current video state on an HTML5 canvas, as if it were a capture from a video. For the facial expression scoring function, we use the Face API provided by Microsoft to analyze the captured face.
 

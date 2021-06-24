@@ -34,14 +34,14 @@ export default function App() {
   // }
   // const disabled = identity === "" ? true : false;
 
-  // useEffect(() => {
-  //   database.test.get().then((snapshot) => {
-  //     // console.log(snapshot);
-  //     snapshot.docs.map((s) => console.log(s.data()));
-  //   });
+  useEffect(() => {
+    database.test.get().then((snapshot) => {
+      // console.log(snapshot);
+      snapshot.docs.map((s) => console.log(s.data()));
+    });
 
-  //   // database.test((snapshot))
-  // }, []);
+    // database.test((snapshot))
+  }, []);
 
   // console.log({ identity, room, roomName });
 
@@ -67,7 +67,7 @@ export default function App() {
       const room = await connect(data.accessToken, {
         room: data.room,
         audio: true,
-        video: true,
+        video: { width: 426 },
       });
       // console.log("this is rooom ----------", room);
       //   const room = data.room;
@@ -84,7 +84,7 @@ export default function App() {
           { merge: true }
         )
         .then(() => {
-          // console.log("insertion successful");
+          console.log("insertion successful");
         });
     } catch (err) {
       console.log(err);
@@ -107,10 +107,10 @@ export default function App() {
   const disabled = identity === "" ? true : false;
 
   return (
-    <div className="bg-blue-900">
-      <h1 className="text-white text-center text-3xl mb-5">EmoFace</h1>
+    <div class="bg-blue-900">
       {room === null ? (
-        <div className="flex justify-center">
+        <div>
+          <h1 className="text-white text-center text-3xl mb-5">EmoFace 🤪</h1>
           <div className="bg-blue-900 flex flex-col items-center">
             <div>
               <input
@@ -128,7 +128,7 @@ export default function App() {
               onClick={removePlaceholderText}
             />
             <button
-              class="px-9 py-4 mb-4 text-base font-semibold rounded-full block hover:bg-pink-400 border border-white text-white "
+              class="px-9 py-4 mb-4 text-base font-semibold rounded-full block bg-pink-400 border border-white text-white hover:bg-pink-700"
               onClick={joinRoom}
             >
               Join Room
