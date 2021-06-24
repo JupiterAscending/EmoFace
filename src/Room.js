@@ -80,6 +80,15 @@ export default function Room({ room, returnToLobby }) {
     setPrompt(prompt);
     return prompt;
   }
+  const faces = {
+    angry: "😠",
+    disgusted: "🤢",
+    fearful: "😨",
+    happy: "😊",
+    neutral: "😐",
+    sad: "🥺",
+    surprised: "😲",
+  };
 
   function addParticipant(participant) {
     console.log(`${participant.identity} has joined the room.`);
@@ -103,7 +112,9 @@ export default function Room({ room, returnToLobby }) {
       {/* <span class="text-xs text-white text-right ml-3">You are in ROOM: {room.name}</span> */}
       {prompt ? (
         <div class="mt-3 text-3xl text-pink-300 ml-3 text-center">
-          <span class="mb-2">Make your {prompt} 😁 face!</span>
+          <span class="mb-2">
+            Make your {prompt} {faces[prompt]} face!
+          </span>
           <br />
           <span class="text-white mt-6">
             {" "}
