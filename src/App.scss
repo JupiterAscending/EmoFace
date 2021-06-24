@@ -1,5 +1,9 @@
 html {
 	background-color: rgb(30, 58, 138);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
 }
 
 .app {
@@ -53,13 +57,11 @@ html {
 
 video {
 	display: block;
-	box-shadow: 0px 0px 15px 5px #ddd;
 	-webkit-transform: scale(-1, 1);
 	transform: scale(-1, 1);
 }
 
 button {
-	background-color: #fe019a;
 	font-weight: bold;
 	display: block;
 	margin: 0 auto;
@@ -75,11 +77,6 @@ button {
 button:disabled {
 	opacity: .4;
 	cursor: initial;
-}
-
-#leaveRoom {
-	margin-top: 25px;
-	margin-left: 0;
 }
 
 input {

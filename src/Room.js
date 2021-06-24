@@ -3,7 +3,7 @@ import Participant from "./Participant";
 import { database } from "./firebase";
 
 // import { RemoteParticipant } from "twilio-video";
-// import "./App.scss";
+import "./App.scss";
 
 export default function Room ({ room, returnToLobby }) {
 	const [ isAnalysed1, setAnalysed1 ] = useState(false);
@@ -89,16 +89,18 @@ export default function Room ({ room, returnToLobby }) {
 
 	return (
 		<React.Fragment>
-			<h1 class="text-s text-white text-right mr-3">You are in ROOM: {room.name}</h1>
+			<span class="text-xs text-white text-right ml-3">You are in ROOM: {room.name}</span>
 			{prompt ? (
 				<div class="text-3xl text-pink-300 ml-3 text-center">
 					{" "}
-					Make your {prompt} 😁 face!
-					<p class="text-white mt-5">
+					<span class="mb-2">Make your {prompt} 😁 face!</span>
+					<br />
+					<span class="text-white mt-6">
 						{" "}
 						{room.localParticipant.identity}のスコア: {score1}
-						スコア2: {score2}
-					</p>
+						<br />
+						{username2}: {score2}
+					</span>
 				</div>
 			) : (
 				""
@@ -135,9 +137,15 @@ export default function Room ({ room, returnToLobby }) {
 					/>
 				))}
 			</div>
-			<button id="leaveRoom" onClick={leaveRoom}>
-				Leave Room
-			</button>
+			<div class="flex justify-center">
+				<button
+					id="leaveRoom"
+					onClick={leaveRoom}
+					class="bg-gray-400 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full mt-5 mb-2"
+				>
+					Leave Room
+				</button>
+			</div>
 		</React.Fragment>
 	);
 }

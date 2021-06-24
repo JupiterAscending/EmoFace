@@ -84,7 +84,7 @@ export default function Participant ({
 	function calculateScore (detectionsWithExpressions) {
 		const float = parseFloat(detectionsWithExpressions[0].expressions.happy);
 		const multiplied = float * 100;
-		const score = Math.round(multiplied);
+		const score = multiplied.toFixed(2);
 		console.log({ float, multiplied, score });
 		return score;
 	}
@@ -110,17 +110,11 @@ export default function Participant ({
 				},
 				{ merge: true }
 			);
-
-			//firebaseにスコア投げる
-			// detectionsWithExpressions[0].expressions.happy
-			//float & round 小数点なし　* 100
 		} else {
 			console.log("setting to result2");
 			setAnalysed2(true);
 			setResult_p2(detectionsWithExpressions);
-			//firebaseにスコア投げる
-			// detectionsWithExpressions[0].expressions.happy
-			//float & round 小数点なし　* 100
+
 			const score2 = calculateScore(detectionsWithExpressions);
 			console.log("score2-----", score2);
 			database.scores.doc(room.name).set(
@@ -136,17 +130,20 @@ export default function Participant ({
 
 	return (
 		<div>
-			<canvas width="300px" height="300px" id={participant.identity + "-canvas"} />
+			<div class="flex justify-center">
+				<canvas width="300px" height="300px" id={participant.identity + "-canvas"} />
+			</div>
+
 
 			<button
-				class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-2"
+				class="bg-pink-400 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full mb-2"
 				onClick={videoCapture}
 			>
 				Set
 			</button>
 			{isReady === true ? (
 				<button
-					class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-2"
+					class="bg-pink-400 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full mb-2"
 					onClick={capture}
 				>
 					Capture Me
@@ -156,7 +153,7 @@ export default function Participant ({
 			)}
 			{isCapture === true ? (
 				<button
-					class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-5"
+					class="bg-pink-400 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full mb-5"
 					id={participant.identity + "-analyse"}
 					onClick={analyse}
 				>
@@ -172,11 +169,6 @@ export default function Participant ({
 					<Track class="h-1/2 content-center" key={track} participant={participant} track={track} />
 				))}
 			</div>
-
-			{result1[0].expressions ? result1[0].expressions.happy : "nothing"}
-			{result2[0].expressions ? result2[0].expressions.happy : "nothing"}
 		</div>
 	);
 }
-
-// realtime data入れるぜ
