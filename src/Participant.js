@@ -173,8 +173,6 @@ export default function Participant ({
 				))}
 			</div>
 
-			{/* <h1>result1[0].expressions &&Result 1: {result1}</h1>
-      <h1>result2[0].expressions && Result 2: {result2}</h1> */}
 			{result1[0].expressions ? result1[0].expressions.happy : "nothing"}
 			{result2[0].expressions ? result2[0].expressions.happy : "nothing"}
 		</div>

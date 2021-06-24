@@ -13,8 +13,10 @@ export default function Room ({ room, returnToLobby }) {
 	const [ remoteParticipants, setRemoteParticipants ] = useState(Array.from(room.participants.values()));
 	const [ score1, setScore1 ] = useState(0);
 	const [ score2, setScore2 ] = useState(0);
+	const [ username2, setusername2 ] = useState("");
 	useEffect(() => {
-		// console.log("this is room in Room component", room);
+		console.log("REMOTE PARTICIPANTS INSIDE ROOM", remoteParticipants);
+		console.log("this is room in Room component", room);
 		room.on("participantConnected", (participant) => addParticipant(participant));
 		room.on("participantDisconnected", (participant) => removeParticipant(participant));
 
@@ -36,6 +38,7 @@ export default function Room ({ room, returnToLobby }) {
 			const userArr = Array.from(room.participants.values());
 			if (userArr.length > 0) {
 				user2name = userArr[0].identity;
+				setusername2(user2name);
 				user2score = doc.data()[user2name];
 				setScore2(user2score);
 				console.log("SCORE2 SET WITH,", user2score);
@@ -91,7 +94,6 @@ export default function Room ({ room, returnToLobby }) {
 				<div class="text-3xl text-pink-300 ml-3 text-center">
 					{" "}
 					Make your {prompt} 😁 face!
-
 					<p class="text-white mt-5">
 						{" "}
 						{room.localParticipant.identity}のスコア: {score1}

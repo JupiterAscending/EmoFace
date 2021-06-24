@@ -1,70 +1,53 @@
-# Getting Started with Create React App
+<h1 align="center">EmoFace</h1>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center">*This repository was created during our time as students at Code Chrysalis.</p><br>
 
-## Available Scripts
+## 1. About
 
-In the project directory, you can run:
+This is a web app for playing through video calls with distant family and friends.
 
-### `yarn start`
+## 2. Usage
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+This web app is intended to be used on smartphones. EmoFace doesn't require any account registration if you just want to join.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+<p align="center"><img src="public/EmoFace.png" width="200px"></p>
 
-### `yarn test`
+Once you have accessed the app, set the name of the room you want to video call and your handle respectively, and click the "Join Room" button.
+Then, when the person you want to video call joins the room you are in, click the "Set" button on the screen. Now you're ready to play together.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This app allows you to make facial expressions based on the subject displayed on the screen, and compete for points for those expressions.
 
-### `yarn build`
+When the two of you are in the room, first press the "Set" button. By doing so, you can prepare for the game.
+When you press the "Set" button, the subject will appear on the screen. Then, make a facial expression of that theme. When you have changed your expression, press the "Capture Me" button. Did you get a capture of your face? Then press the "Analyze Me" button, and the score of your expression will be displayed. Now you can compete with each other's facial expressions.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Still not playing enough?
+If so, press the "Set" button again. Then press the "Set" button again, and the next subject will be displayed. The rest of the procedure is the same. After playing, you can leave the room by pressing "Leave Room".
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 3. How it works
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The way the application works is as follows.
 
-### `yarn eject`
+<p align="center"><img src="public/Twilio-Video.png" width="50%"></p>
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The video feature of this web app takes advantage of the Twilio Programmable Video feature. Capturing from a video is done by depicting the current video state on an HTML5 canvas, as if it were a capture from a video. For the facial expression scoring function, we use the Face API provided by Microsoft to analyze the captured face.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 4. Technology used
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+This software was built with the following technologies.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+<p align="center"><img src="public/technology.png" width="70%"></p>
 
-## Learn More
+## 5. Future features
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 6. Authors
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Co-authors of this application
 
-### Code Splitting
+- Miho Ogura
+- Yuriko Hijikata
+- Naoyuki Hayasaka
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 7. Finally
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Finally, I would like to express my sincere respect to Mr. Daizen Ikehara for providing the twilio api.
+Thank you very much!
