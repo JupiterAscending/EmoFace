@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
-const twilio = require("twilio");
+// const twilio = require("twilio");
 // const AccessToken = require('twilio').jwt.AccessToken;
 
 app.use(cors());
