@@ -75,7 +75,7 @@ export default function Room({ room, returnToLobby }) {
       "sad",
       "surprised",
     ];
-    const index = Math.floor(Math.random() * (prompts.length - 1));
+    const index = Math.floor(Math.random() * prompts.length);
     const prompt = prompts[index];
     setPrompt(prompt);
     return prompt;
@@ -152,6 +152,7 @@ export default function Room({ room, returnToLobby }) {
           setCount={setCount}
           room={room}
           setPrompt={setPrompt}
+          username2={username2}
         />
         {remoteParticipants.map((participant) => (
           <Participant
@@ -167,6 +168,7 @@ export default function Room({ room, returnToLobby }) {
             prompt={prompt}
             room={room}
             setPrompt={setPrompt}
+            username2={username2}
           />
         ))}
       </div>

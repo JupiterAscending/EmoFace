@@ -19,6 +19,7 @@ export default function Participant({
   count,
   setCount,
   generatePrompt,
+  username2,
 }) {
   const existingPublications = Array.from(participant.tracks.values());
   const existingTracks = existingPublications.map((publication) => publication.track);
@@ -76,6 +77,15 @@ export default function Participant({
   }
 
   function videoCapture() {
+    //　reset scores
+    console.log(localParticipant, participant, "inside videocapture");
+    database.scores.doc(room.name).set(
+      {
+        [participant.identity]: 0,
+        [username2]: 0,
+      },
+      { merge: true }
+    );
     const name = participant.identity;
     setCanvas(document.getElementById(name + "-canvas"));
     setVideo(document.getElementById(name));
