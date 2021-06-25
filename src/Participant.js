@@ -78,13 +78,21 @@ export default function Participant({
 
   function videoCapture() {
     //　reseting scores by updating the database
+
     database.scores.doc(room.name).set(
       {
         [participant.identity]: 0,
-        [username2]: 0,
       },
       { merge: true }
     );
+    if (username2) {
+      database.scores.doc(room.name).set(
+        {
+          [username2]: 0,
+        },
+        { merge: true }
+      );
+    }
     const name = participant.identity;
     setCanvas(document.getElementById(name + "-canvas"));
     setVideo(document.getElementById(name));
