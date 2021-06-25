@@ -15,14 +15,15 @@ export default function Room({ room, returnToLobby }) {
   const [score2, setScore2] = useState(0);
   const [username2, setusername2] = useState("");
   useEffect(() => {
-    console.log("REMOTE PARTICIPANTS INSIDE ROOM", remoteParticipants);
-    console.log("this is room in Room component", room);
+    // console.log("REMOTE PARTICIPANTS INSIDE ROOM", remoteParticipants);
+    // console.log("this is room in Room component", room);
     room.on("participantConnected", (participant) => addParticipant(participant));
     room.on("participantDisconnected", (participant) => removeParticipant(participant));
 
     window.addEventListener("beforeunload", leaveRoom);
     database.scores.doc(room.name).onSnapshot((doc) => {
       const currentPrompt = doc.data().prompt;
+      //   const isPlaying = doc.data().isPlaying;
       console.log("Realtime update snapshot-----", doc.data());
       setPrompt(currentPrompt);
 

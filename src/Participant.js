@@ -78,7 +78,6 @@ export default function Participant({
 
   function videoCapture() {
     //　reseting scores by updating the database
-
     database.scores.doc(room.name).set(
       {
         [participant.identity]: 0,

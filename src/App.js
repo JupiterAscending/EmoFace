@@ -54,6 +54,7 @@ export default function App() {
             [identity]: 0,
             finished: false,
             prompt: "",
+            isPlaying: false,
           },
           { merge: true }
         )
@@ -81,33 +82,34 @@ export default function App() {
   const disabled = identity === "" ? true : false;
 
   return (
-    <div class="bg-blue-900 flex mt-5 justify-center">
+    <div class="bg-blue-900 flex justify-center">
       {room === null ? (
-        <div>
-          <h1 className="text-white text-center text-3xl mb-5">EmoFace 🤪</h1>
-          <div className="bg-blue-900 flex flex-col items-center">
-            <div>
+        <div class="mt-10">
+          <h1 className="text-5xl text-white text-center lg:text-7xl mb-5">EmoFace 🤪</h1>
+          <div className="bg-blue-900 flex flex-col content-center justify-content mt-20">
+            <div class="flex justify-center">
               <input
-                class="shadow appearance-none  rounded w-100 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                class="mt-5 shadow appearance-none  rounded w-full lg:w-5/6 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="room name"
                 onChange={updateRoomName}
               />
             </div>
-            <input
-              class="shadow appearance-none  rounded w-100 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="What's your name?"
-              ref={inputRef}
-              value={identity}
-              onChange={updateIdentity}
-              onClick={removePlaceholderText}
-            />
+            <div class="flex justify-center">
+              <input
+                class="shadow appearance-none  rounded w-full lg:w-5/6 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                placeholder="What's your name?"
+                ref={inputRef}
+                value={identity}
+                onChange={updateIdentity}
+                onClick={removePlaceholderText}
+              />
+            </div>
             <button
-              class="px-9 py-4 mb-4 text-base font-semibold rounded-full block bg-pink-400 border border-white text-white hover:bg-pink-700"
+              class="px-9 py-4 mb-4 mt-5 text-base font-semibold rounded-full block bg-pink-400 border border-white text-white hover:bg-pink-700"
               onClick={joinRoom}
             >
               Join Room
             </button>
-            <p class="text-white">{error}</p>
           </div>
         </div>
       ) : (
