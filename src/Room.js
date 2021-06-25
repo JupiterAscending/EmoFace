@@ -109,9 +109,9 @@ export default function Room({ room, returnToLobby }) {
 
   return (
     <div>
-      {/* <span class="text-xs text-white text-right ml-3">You are in ROOM: {room.name}</span> */}
-      {prompt ? (
-        <div class="mt-3 text-3xl text-pink-300 ml-3 text-center">
+      <span class="text-xs text-white text-right ml-3">You are in ROOM: {room.name}</span>
+      {count >= 2 ? (
+        <div class="mt-3 text-xl text-pink-300 ml-3 text-center md:text-2xl lg:text-3xl">
           <span class="mb-2">
             Make your {prompt} {faces[prompt]} face!
           </span>
@@ -124,8 +124,8 @@ export default function Room({ room, returnToLobby }) {
           </span>
         </div>
       ) : (
-        <div class="mt-3 text-3xl text-transparent ml-3 text-center">
-          <span class="mb-2">Prompt will be shown after game set</span>
+        <div class="mt-3 text-xl text-pink-300 ml-3 text-center md:text-2xl lg:text-3xl ">
+          <span class="mb-2 text-transparent">Prompt will be shown after game set</span>
           <br />
           <span class="text-transparent mt-6">
             {" "}
@@ -137,7 +137,7 @@ export default function Room({ room, returnToLobby }) {
       )}
       <div />
 
-      <div class="grid grid-cols-1 gap-2 md:grid-cols-2 col-start-1 content-center">
+      <div class="grid grid-cols-2 gap-2 col-start-1">
         <Participant
           generatePrompt={generatePrompt}
           isAnalysed1={isAnalysed1}

@@ -77,8 +77,7 @@ export default function Participant({
   }
 
   function videoCapture() {
-    //　reset scores
-    console.log(localParticipant, participant, "inside videocapture");
+    //　reseting scores by updating the database
     database.scores.doc(room.name).set(
       {
         [participant.identity]: 0,
@@ -97,9 +96,11 @@ export default function Participant({
     }
   }
   function capture() {
-    let canvasSizeX = 300; //canvasの幅
-    let canvasSizeY = (canvasSizeX * video.videoHeight) / video.videoWidth; //canvasの高さ
-    canvas.getContext("2d").drawImage(video, 0, 0, canvasSizeX, canvasSizeY); //videoタグの「今」の状態をcanvasに描写
+    const container = document.getElementById("canvas-container");
+    console.log(container.clientHeight, container.clientWidth);
+    canvas.width = parseInt(container.clientWidth); //canvasの幅
+    canvas.height = parseInt(container.clientHeight); //canvasの高さ
+    canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height); //videoタグの「今」の状態をcanvasに描写
     setCapture(true);
   }
   function calculateScore(detectionsWithExpressions) {
@@ -163,53 +164,60 @@ export default function Participant({
       } else {
         console.log("no score!");
       }
+      setAnalysed1(false);
+      setAnalysed2(false);
     }
     setLoading(false);
   }
 
   return (
     <div>
-      <div class="flex justify-center">
-        <canvas width="300px" height="300px" id={participant.identity + "-canvas"} />
+      <div class="flex justify-center border-white">
+        <div
+          id="canvas-container"
+          class="w-30 h-25 mb-5 md:h-44 md:w-60 lg:w-96 lg:h-72 lg:border-4 md:border-2"
+        >
+          <canvas width="100" height="100" id={participant.identity + "-canvas"} />
+        </div>
       </div>
       <button
-        class="bg-pink-400 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full mb-2"
+        class="w-40 lg:w-50 bg-pink-400 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full mb-2"
         onClick={videoCapture}
       >
         Game Set
       </button>
       {isReady === true ? (
         <button
-          class="bg-pink-400 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full mb-2"
+          class="w-40 lg:w-50 bg-pink-400 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full mb-2"
           onClick={capture}
         >
           Capture Me
         </button>
       ) : (
-        <button class="bg-gray-400 text-white font-bold py-2 px-4 rounded-full mb-2">
+        <button class="w-40 lg:w-50  bg-gray-400 text-white font-bold py-2 px-4 rounded-full mb-2">
           {" "}
           Capture Me
         </button>
       )}
       {isCapture === true ? (
         <button
-          class="bg-pink-400 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full mb-5"
+          class="w-40 lg:w-50  bg-pink-400 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full mb-5"
           id={participant.identity + "-analyse"}
           onClick={analyse}
         >
           Analyse Me
         </button>
       ) : (
-        <button class="bg-gray-400 text-white font-bold py-2 px-4 rounded-full mb-5">
+        <button class="w-40 lg:w-50  bg-gray-400 text-white font-bold py-2 px-4 rounded-full mb-5">
           {" "}
           Analyse Me
         </button>
       )}
 
       {error ? (
-        <span class="text-red-300">{error}</span>
+        <span class="text-md text-red-300">{error}</span>
       ) : (
-        <span class="text-red-300 invisible">"this is the error place</span>
+        <span class="text-md  text-red-300 invisible">"this is the error place</span>
       )}
 
       {isLoading === true ? (
