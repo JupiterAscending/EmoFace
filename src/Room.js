@@ -51,7 +51,7 @@ export default function Room({ room, returnToLobby }) {
   // useEffect count が変わったとき動作、 if count === 2 firebaseにprompt を入れる。
   // realtimeでprompt表示
   useEffect(() => {
-    if (count >= 2) {
+    if (count >= 1) {
       console.count("generatePrompt running-----");
       //   const prompt = generatePrompt();
       console.log("prompt------", prompt);
@@ -111,7 +111,7 @@ export default function Room({ room, returnToLobby }) {
   return (
     <div>
       <span class="text-xs text-white text-right ml-3">You are in ROOM: {room.name}</span>
-      {count >= 2 ? (
+      {prompt !== "" ? (
         <div class="mt-3 text-xl text-pink-300 ml-3 text-center md:text-2xl lg:text-3xl">
           <span class="mb-2">
             Make your {prompt} {faces[prompt]} face!
