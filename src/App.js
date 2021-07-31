@@ -2,6 +2,7 @@ import "./App.scss";
 import React, { useState, useRef, useEffect } from "react";
 import Room from "./Room";
 import { database } from "./firebase";
+import axios from "axios";
 
 const { connect } = require("twilio-video");
 
@@ -20,21 +21,17 @@ export default function App() {
 
   async function joinRoom() {
     try {
-      const response = await fetch(
-        `https://video-sample-jp-3971-dev.twil.io/video-token`,
-        {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify({
-            identity: identity,
-            room_name: roomName,
-          }),
-        }
-      );
+      const data = await axios(`/video-token`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          identity: identity,
+          room_name: roomName,
+        }),
+      });
 
-      const data = await response.json();
       console.log(data);
       console.log(`token: ${data.accessToken}`);
       console.log(`room: ${data.room}`);
