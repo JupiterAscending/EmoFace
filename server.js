@@ -27,7 +27,7 @@ app.post("/video-token", (req, res) => {
   grant.room = room;
   token.addGrant(grant);
 
-  return token.toJwt();
+  res.json(token.toJwt());
 });
 
 app.listen(port, () => {
