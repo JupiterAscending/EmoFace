@@ -15,7 +15,7 @@ firestore.settings({ timestampsInSnapshots: true });
 
 export const database = {
   test: firestore.collection("test"),
-  scores: firestore.collection("scores"),
+  rooms: firestore.collection("rooms"),
 };
 
 // db.settings({ experimentalForceLongPolling: true });

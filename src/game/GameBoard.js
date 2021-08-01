@@ -5,6 +5,7 @@ import { faces, generatePrompt } from "../utils/gameHelper";
 import Loader from "react-loader-spinner";
 import * as faceapi from "face-api.js";
 import { ParticipantInstance } from "twilio/lib/rest/video/v1/room/roomParticipant";
+import { database } from "../firebase";
 
 function GameBoard({ room }) {
   const [prompt, setPrompt] = useState(generatePrompt());
@@ -17,7 +18,64 @@ function GameBoard({ room }) {
   const [error, setError] = useState("");
 
   const [isCapture, setCapture] = useState(false);
-  const [users, setUsers] = useState();
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    // create a entry in a room database with your name
+    database.rooms
+      .doc(room.name)
+      .set(
+        {
+          [room.localParticipant.identity]: {
+            score: 0,
+            capturedFace: "",
+          },
+          prompt: prompt,
+          isPlaying: false,
+        },
+        { merge: true }
+      )
+      .then(() => {
+        console.log("insertion successful");
+      });
+
+    // realtime subscription
+    database.rooms.doc(room.name).onSnapshot((doc) => {
+      // sync prompt
+      const currentPrompt = doc.data().prompt;
+      console.log("Realtime update snapshot----- prompt", doc.data().prompt);
+      setPrompt(currentPrompt);
+
+      // sync score
+      const users = doc.data().users;
+      console.log("Realtime users", users);
+
+      // const user1score = doc.data()[room.localParticipant.identity];
+      // setScore1(user1score);
+
+      // let user2name;
+      // let user2score = 0;
+      // const userArr = Array.from(room.participants.values());
+      // if (userArr.length > 0) {
+      //   user2name = userArr[0].identity;
+      //   setusername2(user2name);
+      //   user2score = doc.data()[user2name];
+      //   setScore2(user2score);
+      //   console.log("SCORE2 SET WITH,", user2score);
+      // }
+    });
+  }, []);
+
+  // useEffect(() => {
+  //   database.rooms.doc(room.name).onSnapshot((doc) => {
+  //     // sync user scores
+  //     users.forEach((user) => {
+  //       const latestScore = doc.data()[user.identity];
+  //       user.score = latestScore;
+  //     });
+  //     console.log("REAL TIME USERS", users);
+  //   });
+  // }, [users]);
 
   const countDown = () => {
     return new Promise((resolve) => {
@@ -45,6 +103,7 @@ function GameBoard({ room }) {
       canvas.width = parseInt(container.clientWidth); //canvasの幅
       canvas.height = parseInt(container.clientHeight);
       canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height); //videoタグの「今」の状態をcanvasに描写
+      const imgData = canvas.toDataURL();
     }
     // setCapture(true);
   };
@@ -62,6 +121,7 @@ function GameBoard({ room }) {
         .withFaceExpressions();
 
       let score = calculateScore(detectionsWithExpressions);
+
       participant.score = score;
 
       if (score === undefined) {
@@ -70,6 +130,13 @@ function GameBoard({ room }) {
 
       console.log(score);
     }
+    // save score to database
+    database.rooms.doc(room.name).set(
+      {
+        users: participants,
+      },
+      { merge: true }
+    );
 
     //   if (score) {
     //     database.scores.doc(room.name).set(
@@ -124,9 +191,25 @@ function GameBoard({ room }) {
   const handleChangePrompt = () => {
     const prompt = generatePrompt();
     setPrompt(prompt);
+    savePrompt(prompt);
+  };
+
+  const savePrompt = async (prompt) => {
+    await database.rooms
+      .doc(room.name)
+      .update({
+        prompt: prompt,
+      })
+      .then(() => {
+        console.log("prompt updated!!", prompt);
+      });
   };
 
   const handleGameSet = async () => {
+    // 0. save prompt to the database
+    console.log({ prompt });
+    await savePrompt(prompt);
+
     // 1. start a timer
     setShowCounter(true);
     await countDown();
@@ -136,6 +219,7 @@ function GameBoard({ room }) {
     const remoteParticipants = Array.from(room.participants).map((participant) => {
       return { identity: participant[1].identity, score: 0 };
     });
+
     setUsers([localParticipant, ...remoteParticipants]);
     setShowScoreboard(true);
 
@@ -166,7 +250,7 @@ function GameBoard({ room }) {
         </div>
       )}
       <button
-        class="w-40 lg:w-50 bg-pink-400 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full mb-5"
+        class="w-40 lg:w-50 bg-pink-400 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full mb-5 mt-5"
         onClick={handleChangePrompt}
       >
         Change prompt?
