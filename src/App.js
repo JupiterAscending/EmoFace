@@ -4,11 +4,11 @@ import { database } from "./firebase";
 import VideoChat from "./videochat/VideoChat";
 
 export default function App() {
-  // useEffect(() => {
-  //   database.test.get().then((snapshot) => {
-  //     snapshot.docs.map((s) => console.log(s.data()));
-  //   });
-  // }, []);
+  useEffect(() => {
+    database.test.get().then((snapshot) => {
+      snapshot.docs.map((s) => console.log(s.data()));
+    });
+  }, []);
 
   // async function joinRoom() {
   //   try {
