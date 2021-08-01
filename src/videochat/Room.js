@@ -22,11 +22,13 @@ function Room({ roomName, token, handleLogout }) {
     const participantConnected = (participant) => {
       setParticipants((prevParticipants) => [...prevParticipants, participant]);
     };
+
     const participantDisconnected = (participant) => {
       setParticipants((prevParticipants) =>
         prevParticipants.filter((p) => p !== participant)
       );
     };
+
     Video.connect(token, {
       name: roomName,
     }).then((room) => {
@@ -38,7 +40,7 @@ function Room({ roomName, token, handleLogout }) {
 
     return () => {
       setRoom((currentRoom) => {
-        if (currentRoom && currentRoom.localParticipant.state === "conected") {
+        if (currentRoom && currentRoom.localParticipant.state === "connected") {
           currentRoom.localParticipant.tracks.forEach(function (trackPublication) {
             trackPublication.track.stop();
           });
@@ -49,7 +51,7 @@ function Room({ roomName, token, handleLogout }) {
         }
       });
     };
-  }, [roomName.token]);
+  }, [roomName, token]);
   return (
     <div>
       <span class="text-xs text-white text-right ml-3">You are in ROOM: {roomName}</span>

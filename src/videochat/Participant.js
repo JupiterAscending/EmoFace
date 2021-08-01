@@ -50,6 +50,7 @@ function Participant({ participant }) {
     if (videoTrack) {
       videoTrack.attach(videoRef.current);
       return () => {
+        console.log("video track detaching");
         videoTrack.detach();
       };
     }
@@ -66,7 +67,7 @@ function Participant({ participant }) {
 
   return (
     <div className="participant">
-      {/* <h3>{participant.identity}</h3> */}
+      <h3>{participant.identity}</h3>
       <video ref={videoRef} autoPlay={true}></video>
       <audio ref={audioRef} autoPlay={true}></audio>
     </div>
