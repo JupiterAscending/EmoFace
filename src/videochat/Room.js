@@ -13,6 +13,8 @@ function Room({ roomName, token, handleLogout }) {
   const [isAnalysed2, setAnalysed2] = useState(false);
   const [count, setCount] = useState(0);
 
+  console.log("rooom.localParticipant", room);
+
   const [participants, setParticipants] = useState([]);
   const remoteParticipants = participants.map((participant) => (
     <Participant key={participant.sid} participant={participant} />
@@ -55,28 +57,17 @@ function Room({ roomName, token, handleLogout }) {
   return (
     <div>
       <span class="text-xs text-white text-right ml-3">You are in ROOM: {roomName}</span>
-      {prompt !== "" ? (
+
+      {room && (
         <div class="mt-3 text-xl text-pink-300 ml-3 text-center md:text-2xl lg:text-3xl">
           <span class="mb-2">
             Make your {prompt} {faces[prompt]} face!
           </span>
           <br />
           <span class="text-white mt-6">
-            {" "}
             {room.localParticipant.identity}: {score1} %
             <br />
             {username2}: {score2} %
-          </span>
-        </div>
-      ) : (
-        <div class="mt-3 text-xl text-pink-300 ml-3 text-center md:text-2xl lg:text-3xl ">
-          <span class="mb-2">Prompt will be shown after game set</span>
-          <br />
-          <span class="text-transparent mt-6">
-            {" "}
-            Score
-            <br />
-            Score
           </span>
         </div>
       )}
