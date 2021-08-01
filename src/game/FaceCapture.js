@@ -1,26 +1,31 @@
 import React from "react";
 import Participant from "../videochat/Participant";
 
-function FaceCapture({ localParticipant, remoteParticipants }) {
-  console.log("remote participants", remoteParticipants);
+function FaceCapture({ participants }) {
+  // console.log("remote participants", remoteParticipants);
   return (
     <div class="flex-row w-full	">
-      <Canvas identity={localParticipant.identity} />
+      {participants.map((participant) => (
+        <Canvas participant={participant} />
+      ))}
+      {/* <Canvas identity={localParticipant.identity} />
       {remoteParticipants.map((participant) => (
         <Canvas identity={participant[1].identity} />
-      ))}
+      ))} */}
     </div>
   );
 }
 
-function Canvas({ identity }) {
-  console.log(identity);
+function Canvas({ participant }) {
+  // console.log(identity);
   return (
     <div
       id="canvas-container"
-      class="w-30 h-25 mb-5 md:h-44 md:w-60 lg:w-96 lg:h-72 lg:border-4 md:border-2"
+      class="w-30 h-25 mb-5 md:h-44 md:w-60 lg:w-96 lg:h-72 lg:border-4 md:border-2 relative"
     >
-      <canvas width="100" height="100" id={identity + "-canvas"} />
+      <p class="absolute bg-white text-center">Name: {participant.identity}</p>
+      <p class="absolute bottom-0 left-0 bg-white">Score: {participant.score}</p>
+      <canvas width="100" height="100" id={participant.identity + "-canvas"} />
     </div>
   );
 }

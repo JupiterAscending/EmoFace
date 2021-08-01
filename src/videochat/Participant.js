@@ -69,7 +69,7 @@ function Participant({ participant }) {
     <div className="participant">
       <h3>{participant.identity}</h3>
       <video ref={videoRef} autoPlay={true} id={participant.identity}></video>
-      <audio ref={audioRef} autoPlay={true}></audio>
+      <audio ref={audioRef} autoPlay={true} muted={true}></audio>
     </div>
   );
 }
