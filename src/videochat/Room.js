@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Video from "twilio-video";
 import Participant from "./Participant";
-import { faces, generatePrompt } from "../utils/gameHelper";
+
+import GameBoard from "../game/GameBoard";
 
 function Room({ roomName, token, handleLogout }) {
   const [room, setRoom] = useState(null);
-  const [prompt, setPrompt] = useState("");
+
   const [score1, setScore1] = useState(0);
   const [score2, setScore2] = useState(0);
   const [username2, setusername2] = useState("");
@@ -58,19 +59,7 @@ function Room({ roomName, token, handleLogout }) {
     <div>
       <span class="text-xs text-white text-right ml-3">You are in ROOM: {roomName}</span>
 
-      {room && (
-        <div class="mt-3 text-xl text-pink-300 ml-3 text-center md:text-2xl lg:text-3xl">
-          <span class="mb-2">
-            Make your {prompt} {faces[prompt]} face!
-          </span>
-          <br />
-          <span class="text-white mt-6">
-            {room.localParticipant.identity}: {score1} %
-            <br />
-            {username2}: {score2} %
-          </span>
-        </div>
-      )}
+      {room && <GameBoard room={room} />}
 
       <div className="local-participant">
         {room ? (
