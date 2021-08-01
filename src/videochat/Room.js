@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from "react";
 import Video from "twilio-video";
 import Participant from "./Participant";
+import { faces, generatePrompt } from "../utils/gameHelper";
 
-function Room({ roomName, token, handlelogout }) {
+function Room({ roomName, token, handleLogout }) {
   const [room, setRoom] = useState(null);
+  const [prompt, setPrompt] = useState("");
+  const [score1, setScore1] = useState(0);
+  const [score2, setScore2] = useState(0);
+  const [username2, setusername2] = useState("");
+  const [isAnalysed1, setAnalysed1] = useState(false);
+  const [isAnalysed2, setAnalysed2] = useState(false);
+  const [count, setCount] = useState(0);
+
   const [participants, setParticipants] = useState([]);
   const remoteParticipants = participants.map((participant) => (
     <Participant key={participant.sid} participant={participant} />
@@ -43,8 +52,33 @@ function Room({ roomName, token, handlelogout }) {
   }, [roomName.token]);
   return (
     <div className="room">
-      <h2>Room: {roomName}</h2>
-      <button onClick={handlelogout}>Log out</button>
+      <span class="text-xs text-white text-right ml-3">You are in ROOM: {roomName}</span>
+      {prompt !== "" ? (
+        <div class="mt-3 text-xl text-pink-300 ml-3 text-center md:text-2xl lg:text-3xl">
+          <span class="mb-2">
+            Make your {prompt} {faces[prompt]} face!
+          </span>
+          <br />
+          <span class="text-white mt-6">
+            {" "}
+            {room.localParticipant.identity}: {score1} %
+            <br />
+            {username2}: {score2} %
+          </span>
+        </div>
+      ) : (
+        <div class="mt-3 text-xl text-pink-300 ml-3 text-center md:text-2xl lg:text-3xl ">
+          <span class="mb-2 text-transparent">Prompt will be shown after game set</span>
+          <br />
+          <span class="text-transparent mt-6">
+            {" "}
+            Score
+            <br />
+            Score
+          </span>
+        </div>
+      )}
+
       <div className="local-participant">
         {room ? (
           <Participant
@@ -55,8 +89,14 @@ function Room({ roomName, token, handlelogout }) {
           ""
         )}
       </div>
-      <h3>Remote participants</h3>
-      <div className="remote-participants">{remoteParticipants}</div>
+
+      <button
+        id="leaveRoom"
+        onClick={handleLogout}
+        class="bg-gray-400 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full mt-5 mb-2"
+      >
+        Leave Room
+      </button>
     </div>
   );
 }

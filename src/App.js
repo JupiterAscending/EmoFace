@@ -1,26 +1,9 @@
 import "./App.scss";
-import React, { useState, useRef, useEffect } from "react";
-import Room from "./Room";
+import React, { useState, useEffect } from "react";
 import { database } from "./firebase";
 import VideoChat from "./videochat/VideoChat";
 
-// const { connect } = require("twilio-video");
-
 export default function App() {
-  // const [identity, setIdentity] = useState("");
-  // // const [room, setRoom] = useState(null);
-  // const [roomName, setRoomName] = useState("");
-  // const [token, setToken] = useState(null)
-  // const inputRef = useRef();
-
-  // const handleUsernameChange = useCallback((e) => {
-  //   setUsername(e.target.value);
-  // }, []);
-  // const handleRoomNameChange = useCallback((e) => {
-  //   setRoomName(e.target.value);
-  // }, []);
-  // const [error, setError] = useState("");
-
   // useEffect(() => {
   //   database.test.get().then((snapshot) => {
   //     snapshot.docs.map((s) => console.log(s.data()));
