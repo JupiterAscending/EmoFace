@@ -7,7 +7,6 @@ const twilio = require("twilio");
 
 app.use(cors());
 app.use(express.json());
-
 app.use(express.static("build"));
 
 const port = process.env.PORT || 5000;
@@ -27,7 +26,9 @@ app.post("/video-token", (req, res) => {
   grant.room = room;
   token.addGrant(grant);
 
-  res.json(token.toJwt());
+  res.json({
+    token: token.toJwt(),
+  });
 });
 
 app.listen(port, () => {

@@ -21,15 +21,9 @@ export default function App() {
 
   async function joinRoom() {
     try {
-      const data = await axios(`/video-token`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          identity: identity,
-          room_name: roomName,
-        }),
+      const response = await axios(`/video-token`, {
+        identity: identity,
+        room_name: roomName,
       });
 
       console.log(data);
