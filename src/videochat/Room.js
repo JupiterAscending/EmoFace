@@ -51,7 +51,7 @@ function Room({ roomName, token, handleLogout }) {
     };
   }, [roomName.token]);
   return (
-    <div className="room">
+    <div>
       <span class="text-xs text-white text-right ml-3">You are in ROOM: {roomName}</span>
       {prompt !== "" ? (
         <div class="mt-3 text-xl text-pink-300 ml-3 text-center md:text-2xl lg:text-3xl">
@@ -68,7 +68,7 @@ function Room({ roomName, token, handleLogout }) {
         </div>
       ) : (
         <div class="mt-3 text-xl text-pink-300 ml-3 text-center md:text-2xl lg:text-3xl ">
-          <span class="mb-2 text-transparent">Prompt will be shown after game set</span>
+          <span class="mb-2">Prompt will be shown after game set</span>
           <br />
           <span class="text-transparent mt-6">
             {" "}
@@ -89,6 +89,7 @@ function Room({ roomName, token, handleLogout }) {
           ""
         )}
       </div>
+      <div className="remote-participants">{remoteParticipants}</div>
 
       <button
         id="leaveRoom"

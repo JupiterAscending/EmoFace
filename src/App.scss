@@ -12,20 +12,38 @@ html {
   justify-content: center;
 }
 
-
 .participant {
-  box-sizing: border-box;
-  position: relative;
-  border-radius: 8px;
-  margin-left: 0.75vw;
-  margin-bottom: 0.75vw;
-  width: 23.5vw;
-  overflow: hidden;
-  height: 50vh;
-  -webkit-mask-image: -webkit-radial-gradient(white, black);
-  display: flex;
-  justify-content: center;
+  background: #333e5a;
+  padding: 10px;
+  border-radius: 6px;
+  display: inline-block;
+  margin-right: 10px;
 }
+
+.local-participant {
+  text-align: center;
+  margin-bottom: 2em;
+}
+.remote-participants {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  padding: 0 2em 2em;
+}
+
+// .participant {
+//   box-sizing: border-box;
+//   position: relative;
+//   border-radius: 8px;
+//   margin-left: 0.75vw;
+//   margin-bottom: 0.75vw;
+//   width: 23.5vw;
+//   overflow: hidden;
+//   height: 50vh;
+//   -webkit-mask-image: -webkit-radial-gradient(white, black);
+//   display: flex;
+//   justify-content: center;
+// }
 
 .identity {
   position: absolute;

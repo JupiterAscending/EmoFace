@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
+import * as canvas from "canvas";
+import * as faceapi from "face-api.js";
+import Loader from "react-loader-spinner";
 
 function Participant({ participant }) {
   const [videoTracks, setVideoTracks] = useState([]);
@@ -63,7 +66,7 @@ function Participant({ participant }) {
 
   return (
     <div className="participant">
-      <h3>{participant.identity}</h3>
+      {/* <h3>{participant.identity}</h3> */}
       <video ref={videoRef} autoPlay={true}></video>
       <audio ref={audioRef} autoPlay={true}></audio>
     </div>

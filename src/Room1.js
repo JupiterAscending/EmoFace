@@ -66,30 +66,30 @@ export default function Room({ room, returnToLobby }) {
     }
   }, [count]);
 
-  function generatePrompt() {
-    const prompts = [
-      "angry",
-      "disgusted",
-      "fearful",
-      "happy",
-      "neutral",
-      "sad",
-      "surprised",
-    ];
-    const index = Math.floor(Math.random() * prompts.length);
-    const prompt = prompts[index];
-    setPrompt(prompt);
-    return prompt;
-  }
-  const faces = {
-    angry: "😠",
-    disgusted: "🤢",
-    fearful: "😨",
-    happy: "😊",
-    neutral: "😐",
-    sad: "🥺",
-    surprised: "😲",
-  };
+  // function generatePrompt() {
+  //   const prompts = [
+  //     "angry",
+  //     "disgusted",
+  //     "fearful",
+  //     "happy",
+  //     "neutral",
+  //     "sad",
+  //     "surprised",
+  //   ];
+  //   const index = Math.floor(Math.random() * prompts.length);
+  //   const prompt = prompts[index];
+  //   setPrompt(prompt);
+  //   return prompt;
+  // }
+  // const faces = {
+  //   angry: "😠",
+  //   disgusted: "🤢",
+  //   fearful: "😨",
+  //   happy: "😊",
+  //   neutral: "😐",
+  //   sad: "🥺",
+  //   surprised: "😲",
+  // };
 
   function addParticipant(participant) {
     console.log(`${participant.identity} has joined the room.`);
