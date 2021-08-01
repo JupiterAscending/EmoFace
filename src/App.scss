@@ -12,6 +12,20 @@ html {
   justify-content: center;
 }
 
+.timer-container {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.timer {
+  font-size: 400px;
+  text-align: center;
+  color: rgba(30, 58, 138, 90);
+}
+
 .participant {
   background: #333e5a;
   padding: 10px;
