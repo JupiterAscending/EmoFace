@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import FaceCapture from "./FaceCapture";
+import Canvas from "./FaceCapture";
 import { faces, generatePrompt } from "../utils/gameHelper";
 import Loader from "react-loader-spinner";
 import * as faceapi from "face-api.js";
@@ -222,7 +222,6 @@ function GameBoard({ room }) {
     });
 
     setUsers([localParticipant, ...remoteParticipants]);
-    setShowScoreboard(true);
 
     capture([localParticipant, ...remoteParticipants]);
 
@@ -266,7 +265,10 @@ function GameBoard({ room }) {
         <Loader type="Circles" color="rgb(244, 114, 182)" height={50} width={50} />
       )}
       <p class="text-yellow">{error}</p>
-      <FaceCapture participants={users} />
+      {users.map((participant) => (
+        <Canvas participant={participant} />
+      ))}
+      {/* <FaceCapture participants={users} /> */}
     </div>
   );
 }
