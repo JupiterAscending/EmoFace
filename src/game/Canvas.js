@@ -1,20 +1,5 @@
 import React, { useRef, useEffect } from "react";
 
-// function FaceCapture({ participants }) {
-//   // console.log("remote participants", remoteParticipants);
-//   return (
-//     <div class="flex-row w-full	">
-//       {participants.map((participant) => (
-//         <Canvas participant={participant} />
-//       ))}
-//       {/* <Canvas identity={localParticipant.identity} />
-//       {remoteParticipants.map((participant) => (
-//         <Canvas identity={participant[1].identity} />
-//       ))} */}
-//     </div>
-//   );
-// }
-
 function Canvas({ participant }) {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Canvas from "./FaceCapture";
+import Canvas from "./Canvas";
 import { faces, generatePrompt } from "../utils/gameHelper";
 import Loader from "react-loader-spinner";
 import * as faceapi from "face-api.js";
@@ -15,7 +15,6 @@ function GameBoard ({ room }) {
 	const [ loading, setLoading ] = useState(false);
 	const [ error, setError ] = useState("");
 
-	const [ isCapture, setCapture ] = useState(false);
 	const [ users, setUsers ] = useState([]);
 
 	useEffect(() => {
@@ -68,8 +67,6 @@ function GameBoard ({ room }) {
 			},
 			{ merge: true }
 		);
-
-		console.log(showCounter);
 
 		return new Promise((resolve) => {
 			const id = setInterval(() => {
@@ -159,8 +156,6 @@ function GameBoard ({ room }) {
 			}
 
 			participant.score = score;
-
-			console.log(score);
 		}
 		// save score to database
 		console.log({ participants });
@@ -171,35 +166,6 @@ function GameBoard ({ room }) {
 			{ merge: true }
 		);
 
-		//   if (score) {
-		//     database.scores.doc(room.name).set(
-		//       {
-		//         [participant.identity]: score,
-		//       },
-		//       { merge: true }
-		//     );
-		//   } else {
-		//     console.log("noscore");
-		//   }
-		// } else {
-		//   setAnalysed2(true);
-		//   setResult_p2(detectionsWithExpressions);
-
-		//   const score2 = calculateScore(detectionsWithExpressions);
-		//   console.log("score2-----", score2);
-		//   if (score2) {
-		//     database.scores.doc(room.name).set(
-		//       {
-		//         [participant.identity]: score2,
-		//       },
-		//       { merge: true }
-		//     );
-		//   } else {
-		//     console.log("no score!");
-		//   }
-		//   setAnalysed1(false);
-		//   setAnalysed2(false);
-		// }
 		setLoading(false);
 	};
 
@@ -264,13 +230,6 @@ function GameBoard ({ room }) {
 					Make your {prompt} {faces[prompt]} face!
 				</span>
 				<br />
-				{/* {showScoreboard && (
-          <span className="text-white mt-6">
-            {room.localParticipant.identity}: %
-            <br />
-            "user2": %
-          </span>
-        )} */}
 			</div>
 			{showCounter && (
 				<div className="timer-container">
