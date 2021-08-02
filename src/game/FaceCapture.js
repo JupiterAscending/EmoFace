@@ -1,5 +1,4 @@
 import React from "react";
-import Participant from "../videochat/Participant";
 
 function FaceCapture({ participants }) {
   // console.log("remote participants", remoteParticipants);

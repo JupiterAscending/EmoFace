@@ -1,10 +1,8 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
-import Prompt from "./Prompt";
+import React, { useState, useEffect } from "react";
 import FaceCapture from "./FaceCapture";
 import { faces, generatePrompt } from "../utils/gameHelper";
 import Loader from "react-loader-spinner";
 import * as faceapi from "face-api.js";
-import { ParticipantInstance } from "twilio/lib/rest/video/v1/room/roomParticipant";
 import { database } from "../firebase";
 
 function GameBoard({ room }) {
@@ -65,17 +63,6 @@ function GameBoard({ room }) {
       // }
     });
   }, []);
-
-  // useEffect(() => {
-  //   database.rooms.doc(room.name).onSnapshot((doc) => {
-  //     // sync user scores
-  //     users.forEach((user) => {
-  //       const latestScore = doc.data()[user.identity];
-  //       user.score = latestScore;
-  //     });
-  //     console.log("REAL TIME USERS", users);
-  //   });
-  // }, [users]);
 
   const countDown = () => {
     return new Promise((resolve) => {

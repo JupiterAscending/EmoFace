@@ -7,15 +7,6 @@ import GameBoard from "../game/GameBoard";
 function Room({ roomName, token, handleLogout }) {
   const [room, setRoom] = useState(null);
 
-  const [score1, setScore1] = useState(0);
-  const [score2, setScore2] = useState(0);
-  const [username2, setusername2] = useState("");
-  const [isAnalysed1, setAnalysed1] = useState(false);
-  const [isAnalysed2, setAnalysed2] = useState(false);
-  const [count, setCount] = useState(0);
-
-  console.log("rooom.localParticipant", room);
-
   const [participants, setParticipants] = useState([]);
   const remoteParticipants = participants.map((participant) => (
     <Participant key={participant.sid} participant={participant} />
