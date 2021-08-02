@@ -24,44 +24,32 @@ function GameBoard({ room }) {
       .doc(room.name)
       .set(
         {
-          [room.localParticipant.identity]: {
-            score: 0,
-            capturedFace: "",
-          },
           prompt: prompt,
           isPlaying: false,
+          users: [],
         },
         { merge: true }
       )
       .then(() => {
-        console.log("insertion successful");
+        // realtime subscription
+        database.rooms.doc(room.name).onSnapshot((doc) => {
+          // sync prompt
+          const currentPrompt = doc.data().prompt;
+          console.log("Realtime update snapshot----- prompt", doc.data().prompt);
+          if (prompt) setPrompt(currentPrompt);
+
+          // sync score & captured face
+          const users = doc.data().users;
+          console.log("Realtime users", users);
+          if (users.length > 0) {
+            setUsers(users);
+
+            for (let user of users) {
+              drawCanvas(user, user.capturedFace);
+            }
+          }
+        });
       });
-
-    // realtime subscription
-    database.rooms.doc(room.name).onSnapshot((doc) => {
-      // sync prompt
-      const currentPrompt = doc.data().prompt;
-      console.log("Realtime update snapshot----- prompt", doc.data().prompt);
-      setPrompt(currentPrompt);
-
-      // sync score
-      const users = doc.data().users;
-      console.log("Realtime users", users);
-
-      // const user1score = doc.data()[room.localParticipant.identity];
-      // setScore1(user1score);
-
-      // let user2name;
-      // let user2score = 0;
-      // const userArr = Array.from(room.participants.values());
-      // if (userArr.length > 0) {
-      //   user2name = userArr[0].identity;
-      //   setusername2(user2name);
-      //   user2score = doc.data()[user2name];
-      //   setScore2(user2score);
-      //   console.log("SCORE2 SET WITH,", user2score);
-      // }
-    });
   }, []);
 
   const countDown = () => {
@@ -82,17 +70,42 @@ function GameBoard({ room }) {
     });
   };
 
-  const capture = (participants) => {
+  const drawCanvas = (participant, base64) => {
+    if (base64 === "") return;
+    console.count("draw canvas was called!");
+
+    const canvas = document.getElementById(participant.identity + "-canvas");
+    const container = document.getElementById("canvas-container");
+    canvas.width = parseInt(container.clientWidth); //canvasの幅
+    canvas.height = parseInt(container.clientHeight);
+    console.log(canvas, "canvas this is in drawCanvas");
+
+    const img = new Image();
+    img.src = base64;
+    console.log("IMG", img);
+    canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+    console.log("canvas after draw", canvas);
+  };
+
+  const capture = async (participants) => {
     for (let participant of participants) {
       const canvas = document.getElementById(participant.identity + "-canvas");
       const video = document.getElementById(participant.identity);
+      // console.log({ video });
       const container = document.getElementById("canvas-container");
       canvas.width = parseInt(container.clientWidth); //canvasの幅
       canvas.height = parseInt(container.clientHeight);
       canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height); //videoタグの「今」の状態をcanvasに描写
-      const imgData = canvas.toDataURL();
+      const imgData = canvas.toDataURL("image/jpeg");
+      participant.capturedFace = imgData;
     }
-    // setCapture(true);
+    // save to database
+    await database.rooms.doc(room.name).update(
+      {
+        users: participants,
+      },
+      { merge: true }
+    );
   };
 
   const analyse = async (participants) => {
@@ -108,17 +121,18 @@ function GameBoard({ room }) {
         .withFaceExpressions();
 
       let score = calculateScore(detectionsWithExpressions);
-
-      participant.score = score;
-
       if (score === undefined) {
+        score = 0;
         setError("顔と認識されませんでした");
       }
+
+      participant.score = score;
 
       console.log(score);
     }
     // save score to database
-    database.rooms.doc(room.name).set(
+    console.log({ participants });
+    database.rooms.doc(room.name).update(
       {
         users: participants,
       },
@@ -213,7 +227,7 @@ function GameBoard({ room }) {
     capture([localParticipant, ...remoteParticipants]);
 
     // 3. analyse
-    analyse([localParticipant, ...remoteParticipants]);
+    // analyse([localParticipant, ...remoteParticipants]);
   };
 
   return (
@@ -252,7 +266,7 @@ function GameBoard({ room }) {
         <Loader type="Circles" color="rgb(244, 114, 182)" height={50} width={50} />
       )}
       <p class="text-yellow">{error}</p>
-      {users && <FaceCapture participants={users} />}
+      <FaceCapture participants={users} />
     </div>
   );
 }

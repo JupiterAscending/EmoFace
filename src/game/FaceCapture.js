@@ -16,6 +16,11 @@ function FaceCapture({ participants }) {
 }
 
 function Canvas({ participant }) {
+  console.count("canvas is being re-rendered");
+
+  // useEffect(()=>{
+
+  // })
   // console.log(identity);
   return (
     <div
