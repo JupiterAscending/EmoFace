@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Canvas from "./FaceCapture";
+import Canvas from "./Canvas";
 import { faces, generatePrompt } from "../utils/gameHelper";
 import Loader from "react-loader-spinner";
 import * as faceapi from "face-api.js";
@@ -15,11 +15,10 @@ function GameBoard({ room }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const [isCapture, setCapture] = useState(false);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    // create a entry in a room database with your name
+    // create a entry in a room database
     database.rooms
       .doc(room.name)
       .set(
@@ -35,18 +34,12 @@ function GameBoard({ room }) {
         database.rooms.doc(room.name).onSnapshot((doc) => {
           // sync prompt
           const currentPrompt = doc.data().prompt;
-          console.log("Realtime update snapshot----- prompt", doc.data().prompt);
           if (prompt) setPrompt(currentPrompt);
 
           // sync score & captured face
           const users = doc.data().users;
-          console.log("Realtime users", users);
           if (users.length > 0) {
             setUsers(users);
-
-            for (let user of users) {
-              drawCanvas(user, user.capturedFace);
-            }
           }
         });
       });
@@ -70,22 +63,22 @@ function GameBoard({ room }) {
     });
   };
 
-  const drawCanvas = (participant, base64) => {
-    if (base64 === "") return;
-    console.count("draw canvas was called!");
+  // const drawCanvas = (participant, base64) => {
+  //   if (base64 === "") return;
+  //   console.count("draw canvas was called!");
 
-    const canvas = document.getElementById(participant.identity + "-canvas");
-    const container = document.getElementById("canvas-container");
-    canvas.width = parseInt(container.clientWidth); //canvasの幅
-    canvas.height = parseInt(container.clientHeight);
-    console.log(canvas, "canvas this is in drawCanvas");
+  //   const canvas = document.getElementById(participant.identity + "-canvas");
+  //   const container = document.getElementById("canvas-container");
+  //   canvas.width = parseInt(container.clientWidth); //canvasの幅
+  //   canvas.height = parseInt(container.clientHeight);
+  //   console.log(canvas, "canvas this is in drawCanvas");
 
-    const img = new Image();
-    img.src = base64;
-    console.log("IMG", img);
-    canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
-    console.log("canvas after draw", canvas);
-  };
+  //   const img = new Image();
+  //   img.src = base64;
+  //   console.log("IMG", img);
+  //   canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+  //   console.log("canvas after draw", canvas);
+  // };
 
   const capture = async (participants) => {
     for (let participant of participants) {
@@ -127,8 +120,6 @@ function GameBoard({ room }) {
       }
 
       participant.score = score;
-
-      console.log(score);
     }
     // save score to database
     console.log({ participants });
@@ -139,50 +130,14 @@ function GameBoard({ room }) {
       { merge: true }
     );
 
-    //   if (score) {
-    //     database.scores.doc(room.name).set(
-    //       {
-    //         [participant.identity]: score,
-    //       },
-    //       { merge: true }
-    //     );
-    //   } else {
-    //     console.log("noscore");
-    //   }
-    // } else {
-    //   setAnalysed2(true);
-    //   setResult_p2(detectionsWithExpressions);
-
-    //   const score2 = calculateScore(detectionsWithExpressions);
-    //   console.log("score2-----", score2);
-    //   if (score2) {
-    //     database.scores.doc(room.name).set(
-    //       {
-    //         [participant.identity]: score2,
-    //       },
-    //       { merge: true }
-    //     );
-    //   } else {
-    //     console.log("no score!");
-    //   }
-    //   setAnalysed1(false);
-    //   setAnalysed2(false);
-    // }
     setLoading(false);
   };
 
   const calculateScore = (detectionsWithExpressions) => {
     if (detectionsWithExpressions[0]) {
-      console.log(prompt);
       const float = parseFloat(detectionsWithExpressions[0].expressions[prompt]);
-      console.log(
-        "inside calculatescore----",
-        detectionsWithExpressions[0].expressions[prompt],
-        prompt
-      );
       const multiplied = float * 100;
       const score = multiplied.toFixed(2);
-      console.log({ float, multiplied, score });
       return score;
     } else {
       setLoading(false);
@@ -208,7 +163,6 @@ function GameBoard({ room }) {
 
   const handleGameSet = async () => {
     // 0. save prompt to the database
-    console.log({ prompt });
     await savePrompt(prompt);
 
     // 1. start a timer
@@ -226,7 +180,7 @@ function GameBoard({ room }) {
     capture([localParticipant, ...remoteParticipants]);
 
     // 3. analyse
-    // analyse([localParticipant, ...remoteParticipants]);
+    analyse([localParticipant, ...remoteParticipants]);
   };
 
   return (
