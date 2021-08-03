@@ -73,6 +73,12 @@ input {
   border-radius: 0;
 }
 
+@media (max-width: 600px) {
+  .participants {
+    flex-wrap: wrap;
+  }
+}
+
 @media (max-width: 1048px) {
   .app {
     padding: 1vw;
