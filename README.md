@@ -16,8 +16,8 @@ Once you have accessed the app, set the name of the room you want to video call 
 Then, when the person you want to video call joins the room you are in, click the "Game Set" button on the screen.
 This app allows you to make facial expressions based on the prompt displayed on the screen, and compete for points for those expressions.
 
-Want to play more?
-If so, press the "Change Prompt?" button and try a different facial expression! After playing, you can leave the room by pressing "Leave Room".
+Want to play more?</br>
+Press the "Change Prompt?" button and try a different facial expression! After playing, you can leave the room by pressing "Leave Room".
 
 ## 3. How it works
 
