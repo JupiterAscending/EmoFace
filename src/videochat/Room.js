@@ -52,17 +52,19 @@ function Room({ roomName, token, handleLogout }) {
 
       {room && <GameBoard room={room} />}
 
-      <div className="local-participant">
+      <div className="participants">
         {room ? (
-          <Participant
-            key={room.localParticipant.sid}
-            participant={room.localParticipant}
-          />
+          <div className="local-participant">
+            <Participant
+              key={room.localParticipant.sid}
+              participant={room.localParticipant}
+            />
+          </div>
         ) : (
           ""
         )}
+        <div className="remote-participants">{remoteParticipants}</div>
       </div>
-      <div className="remote-participants">{remoteParticipants}</div>
 
       <button
         id="leaveRoom"
