@@ -11,7 +11,7 @@ export default function App() {
         <h1 className="text-5xl text-white text-center lg:text-7xl mb-5">EmoFace 🤪</h1>
         <div className="text-white text-center">
           <button
-            className="hover:text-pink-700 fixed top-0 right-0"
+            className="hover:text-pink-700 lg:fixed lg:top-0 lg:right-0"
             onClick={() => {
               setShowOnboarding(!showOnboarding);
             }}
