@@ -27,9 +27,9 @@ Our application works as follows.
 
 The video feature of this web app takes advantage of the Twilio Programmable Video feature. For the facial expression scoring, we use the Face API provided by Microsoft to analyze the captured face.
 
-## 4. Technology used
+## 4. Technologies used
 
-This software was built with the following technologies.
+This app was built with the following technologies.
 
 <p align="center"><img src="public/technology.png" width="70%"></p>
 
