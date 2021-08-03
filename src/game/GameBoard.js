@@ -9,7 +9,7 @@ function GameBoard({ room }) {
   const [prompt, setPrompt] = useState(generatePrompt());
   const [counter, setCounter] = useState(3);
   const [showCounter, setShowCounter] = useState(false);
-  const [showScoreboard, setShowScoreboard] = useState(false);
+  // const [showScoreboard, setShowScoreboard] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -37,9 +37,13 @@ function GameBoard({ room }) {
           if (prompt) setPrompt(currentPrompt);
 
           // sync score & captured face
-          const users = doc.data().users;
-          if (users.length > 0) {
-            setUsers(users);
+          const updatedUsers = doc.data().users;
+          if (
+            updatedUsers.length > 0 &&
+            JSON.stringify(updatedUsers) !== JSON.stringify(users)
+          ) {
+            console.log("setuser running");
+            setUsers(updatedUsers);
           }
         });
       });
@@ -220,7 +224,7 @@ function GameBoard({ room }) {
       )}
       <p class="text-yellow">{error}</p>
       {users.map((participant) => (
-        <Canvas participant={participant} />
+        <Canvas participant={participant} users={users} />
       ))}
       {/* <FaceCapture participants={users} /> */}
     </div>

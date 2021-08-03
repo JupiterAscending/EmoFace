@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 function Canvas({ participant }) {
   const canvasRef = useRef(null);
@@ -14,6 +14,7 @@ function Canvas({ participant }) {
     const img = new Image();
     img.src = participant.capturedFace;
     // console.log("IMG", img);
+
     canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
     console.log("canvas after draw", canvas);
   });
