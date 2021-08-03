@@ -26,38 +26,39 @@ html {
   color: rgba(0, 0, 0, 90);
 }
 
+.participants {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  padding: 0 2em 2em;
+}
+
 .participant {
-  background: #333e5a;
+  background: rgb(244, 114, 182);
   padding: 10px;
   border-radius: 6px;
   display: inline-block;
   margin-right: 10px;
+  margin-bottom: 10px;
 }
 
-.local-participant {
-  text-align: center;
-  margin-bottom: 2em;
+.local-participant .participant {
+  width: 100%;
 }
+.local-participant {
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+
+  width: 50%;
+}
+
 .remote-participants {
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
   padding: 0 2em 2em;
 }
-
-// .participant {
-//   box-sizing: border-box;
-//   position: relative;
-//   border-radius: 8px;
-//   margin-left: 0.75vw;
-//   margin-bottom: 0.75vw;
-//   width: 23.5vw;
-//   overflow: hidden;
-//   height: 50vh;
-//   -webkit-mask-image: -webkit-radial-gradient(white, black);
-//   display: flex;
-//   justify-content: center;
-// }
 
 .identity {
   position: absolute;
@@ -104,25 +105,50 @@ input {
   text-align: center;
   border-radius: 0;
 }
+@media (max-width: 600px) {
+  .participants {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+  }
+  .participant {
+    margin-right: 0;
+    display: block;
+  }
+  .local-participant {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .local-participant .participant {
+    width: 50%;
+  }
+
+  .remote-participants .participant {
+    width: 100%;
+  }
+}
 
 @media (max-width: 1048px) {
   .app {
     padding: 1vw;
   }
 
-  .participant {
-    width: 47vw;
-    margin-top: 1vw;
-    margin-bottom: 1vw;
-    margin-left: 2vw;
-    height: 42vh;
-  }
+  // .participant {
+  //   width: 47vw;
+  //   margin-top: 1vw;
+  //   margin-bottom: 1vw;
+  //   margin-left: 2vw;
+  //   height: 42vh;
+  // }
 
   @media (orientation: landscape) {
-    .participant {
-      width: 48vw;
-      margin-left: 1vw;
-      height: 96vh;
-    }
+    // .participant {
+    //   width: 48vw;
+    //   margin-left: 1vw;
+    //   height: 96vh;
+    // }
   }
 }

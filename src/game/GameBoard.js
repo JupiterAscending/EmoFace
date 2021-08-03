@@ -18,7 +18,7 @@ function GameBoard({ room }) {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    // create a entry in a room database
+    // create a entry in a room database with your name
     database.rooms
       .doc(room.name)
       .set(
@@ -26,6 +26,8 @@ function GameBoard({ room }) {
           prompt: prompt,
           isPlaying: false,
           users: [],
+          counter: counter,
+          showCounter: showCounter,
         },
         { merge: true }
       )
@@ -34,32 +36,62 @@ function GameBoard({ room }) {
         database.rooms.doc(room.name).onSnapshot((doc) => {
           // sync prompt
           const currentPrompt = doc.data().prompt;
+          console.log("Realtime update snapshot----- prompt", doc.data().prompt);
           if (prompt) setPrompt(currentPrompt);
 
-          // sync score & captured face
-          const updatedUsers = doc.data().users;
-          if (
-            updatedUsers.length > 0 &&
-            JSON.stringify(updatedUsers) !== JSON.stringify(users)
-          ) {
-            console.log("setuser running");
-            setUsers(updatedUsers);
+          // sync counter & score & captured face
+          const currentShowCounter = doc.data().showCounter;
+          console.log(currentShowCounter, "this is showCounter");
+          setShowCounter(currentShowCounter);
+
+          const currentCounter = doc.data().counter;
+          setCounter(currentCounter);
+
+          const users = doc.data().users;
+          console.log("Realtime users", users);
+          if (users.length > 0) {
+            setUsers(users);
+
+            // for (let user of users) {
+            //   drawCanvas(user, user.capturedFace);
+            // }
           }
         });
       });
   }, []);
 
-  const countDown = () => {
+  const countDown = async () => {
+    await database.rooms.doc(room.name).update(
+      {
+        showCounter: true,
+      },
+      { merge: true }
+    );
+
     return new Promise((resolve) => {
       const id = setInterval(() => {
         setCounter((counter) => {
           if (counter > 0) {
-            return counter - 1;
+            database.rooms.doc(room.name).update(
+              {
+                counter: counter - 1,
+              },
+              { merge: true }
+            );
+            // return counter - 1;
           } else {
+            database.rooms.doc(room.name).update(
+              {
+                counter: 3,
+                showCounter: false,
+              },
+              { merge: true }
+            );
             setShowCounter(false);
             clearInterval(id);
             // reset counter
             setCounter(3);
+
             resolve();
           }
         });
@@ -67,22 +99,22 @@ function GameBoard({ room }) {
     });
   };
 
-  // const drawCanvas = (participant, base64) => {
-  //   if (base64 === "") return;
-  //   console.count("draw canvas was called!");
+  //   const drawCanvas = (participant, base64) => {
+  //     if (base64 === "") return;
+  //     console.count("draw canvas was called!");
 
-  //   const canvas = document.getElementById(participant.identity + "-canvas");
-  //   const container = document.getElementById("canvas-container");
-  //   canvas.width = parseInt(container.clientWidth); //canvasの幅
-  //   canvas.height = parseInt(container.clientHeight);
-  //   console.log(canvas, "canvas this is in drawCanvas");
+  //     const canvas = document.getElementById(participant.identity + "-canvas");
+  //     const container = document.getElementById("canvas-container");
+  //     canvas.width = parseInt(container.clientWidth); //canvasの幅
+  //     canvas.height = parseInt(container.clientHeight);
+  //     console.log(canvas, "canvas this is in drawCanvas");
 
-  //   const img = new Image();
-  //   img.src = base64;
-  //   console.log("IMG", img);
-  //   canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
-  //   console.log("canvas after draw", canvas);
-  // };
+  //     const img = new Image();
+  //     img.src = base64;
+  //     console.log("IMG", img);
+  //     canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+  //     console.log("canvas after draw", canvas);
+  //   };
 
   const capture = async (participants) => {
     for (let participant of participants) {
@@ -139,9 +171,16 @@ function GameBoard({ room }) {
 
   const calculateScore = (detectionsWithExpressions) => {
     if (detectionsWithExpressions[0]) {
+      console.log(prompt);
       const float = parseFloat(detectionsWithExpressions[0].expressions[prompt]);
+      console.log(
+        "inside calculatescore----",
+        detectionsWithExpressions[0].expressions[prompt],
+        prompt
+      );
       const multiplied = float * 100;
       const score = multiplied.toFixed(2);
+      console.log({ float, multiplied, score });
       return score;
     } else {
       setLoading(false);
@@ -167,6 +206,7 @@ function GameBoard({ room }) {
 
   const handleGameSet = async () => {
     // 0. save prompt to the database
+    console.log({ prompt });
     await savePrompt(prompt);
 
     // 1. start a timer
@@ -188,25 +228,13 @@ function GameBoard({ room }) {
   };
 
   return (
-    <div>
-      <div class="mt-3 text-xl text-pink-300 ml-3 text-center md:text-2xl lg:text-3xl">
-        <span class="mb-2">
-          Make your {prompt} {faces[prompt]} face!
-        </span>
-        <br />
-        {/* {showScoreboard && (
-          <span className="text-white mt-6">
-            {room.localParticipant.identity}: %
-            <br />
-            "user2": %
-          </span>
-        )} */}
-      </div>
+    <div class="flex flex-col justify-center items-center">
       {showCounter && (
         <div className="timer-container">
           <p className="timer">{counter}</p>
         </div>
       )}
+<<<<<<< HEAD
       <button
         class="w-40 lg:w-50 bg-pink-400 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full mb-5 mt-5"
         onClick={handleChangePrompt}
@@ -226,6 +254,39 @@ function GameBoard({ room }) {
       {users.map((participant) => (
         <Canvas participant={participant} users={users} />
       ))}
+=======
+      <span class="mb-2 text-center text-white text-2xl md:text-4xl lg:text-4xl">
+        Make your {prompt} {faces[prompt]} face!
+      </span>
+      <br />
+      <div class="mt-3 text-xl text-pink-300 ml-3 text-center md:text-2xl lg:text-3xl flex flex-col justify-center">
+        <div>
+          <button
+            class="w-40 lg:w-50 bg-pink-400 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full mb-5 mt-5"
+            onClick={handleChangePrompt}
+          >
+            Change prompt?
+          </button>
+          <button
+            class="w-40 lg:w-50 bg-pink-400 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full mb-5"
+            onClick={handleGameSet}
+          >
+            Game Set
+          </button>
+        </div>
+        <div>
+          {loading && (
+            <Loader type="Circles" color="rgb(244, 114, 182)" height={50} width={50} />
+          )}
+        </div>
+        <div class="flex flex-row flex-wrap">
+          {/* <p class="text-white">{error}</p> */}
+          {users.map((participant) => (
+            <Canvas participant={participant} />
+          ))}
+        </div>
+      </div>
+>>>>>>> 27350fa95f4505169a38b2b81f880e7c8545d28e
       {/* <FaceCapture participants={users} /> */}
     </div>
   );
