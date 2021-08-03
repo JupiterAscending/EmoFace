@@ -3,7 +3,28 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  //   height: 100%;
+}
+
+.main {
+  justify-content: center;
+  align-items: center;
+}
+
+.onboarding-container {
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.text-box {
+  color: white;
+  font-size: 1.5em;
 }
 
 #root {
@@ -128,27 +149,5 @@ input {
 
   .remote-participants .participant {
     width: 100%;
-  }
-}
-
-@media (max-width: 1048px) {
-  .app {
-    padding: 1vw;
-  }
-
-  // .participant {
-  //   width: 47vw;
-  //   margin-top: 1vw;
-  //   margin-bottom: 1vw;
-  //   margin-left: 2vw;
-  //   height: 42vh;
-  // }
-
-  @media (orientation: landscape) {
-    // .participant {
-    //   width: 48vw;
-    //   margin-left: 1vw;
-    //   height: 96vh;
-    // }
   }
 }

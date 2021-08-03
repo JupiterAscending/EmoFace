@@ -9,7 +9,7 @@ function Lobby({
 }) {
   return (
     <form onSubmit={handleSubmit}>
-      <div className="bg-blue-900 flex flex-col content-center justify-content mt-20">
+      <div className="bg-blue-900 flex flex-col content-center justify-content mt-5">
         <div className="flex justify-center">
           <input
             className="mt-5 shadow appearance-none  rounded w-full lg:w-5/6 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"

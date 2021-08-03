@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Canvas from "./Canvas";
-import { faces, generatePrompt } from "../utils/gameHelper";
+import { faces, generatePrompt, calculateScore } from "../utils/gameHelper";
 import Loader from "react-loader-spinner";
 import * as faceapi from "face-api.js";
 import { database } from "../firebase";
@@ -100,9 +100,10 @@ function GameBoard({ room }) {
       const detectionsWithExpressions = await faceapi
         .detectAllFaces(canvas, new faceapi.TinyFaceDetectorOptions())
         .withFaceExpressions();
-      let score = calculateScore(detectionsWithExpressions);
+      let score = calculateScore(detectionsWithExpressions, prompt);
+      console.log({ score });
       if (score === undefined) {
-        score = "顔として認識されませんでした。";
+        score = "顔認識に失敗";
       }
       participant.score = score;
     }
@@ -111,16 +112,6 @@ function GameBoard({ room }) {
     setLoading(false);
   };
 
-  const calculateScore = (detectionsWithExpressions) => {
-    if (detectionsWithExpressions[0]) {
-      const float = parseFloat(detectionsWithExpressions[0].expressions[prompt]);
-      const multiplied = float * 100;
-      const score = multiplied.toFixed(2);
-      return score;
-    } else {
-      setLoading(false);
-    }
-  };
   const handleChangePrompt = () => {
     const prompt = generatePrompt();
     setPrompt(prompt);
