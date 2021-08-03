@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 
 function Canvas({ participant }) {
   const canvasRef = useRef(null);
@@ -9,14 +9,9 @@ function Canvas({ participant }) {
     const container = containerRef.current;
     canvas.width = parseInt(container.clientWidth); //canvasの幅
     canvas.height = parseInt(container.clientHeight);
-    // console.log(canvas, "canvas this is in drawCanvas");
-
     const img = new Image();
     img.src = participant.capturedFace;
-    // console.log("IMG", img);
-
     canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
-    console.log("canvas after draw", canvas);
   });
   return (
     <div
@@ -28,15 +23,10 @@ function Canvas({ participant }) {
         <b> Name</b>: {participant.identity}
         <br />
         <b> Score</b>: {participant.score}
-        {/* <p class="absolute bottom-0 rounded-md left-0 bg-white text-xs md:text-lg lg:text-xl">
-          Score: {participant.score}
-        </p> */}
       </p>
 
       <canvas
         ref={canvasRef}
-        // width="100"
-        // height="100"
         class="w-full h-full "
         id={participant.identity + "-canvas"}
       />

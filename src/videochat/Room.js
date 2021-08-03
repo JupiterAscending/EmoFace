@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Video from "twilio-video";
 import Participant from "./Participant";
-
 import GameBoard from "../game/GameBoard";
 
 function Room({ roomName, token, handleLogout }) {
@@ -49,23 +48,18 @@ function Room({ roomName, token, handleLogout }) {
   return (
     <div>
       <span class="text-xs text-white text-right ml-3">You are in ROOM: {roomName}</span>
-
       {room && <GameBoard room={room} />}
-
       <div className="participants">
         {room ? (
-          <div className="local-participant">
-            <Participant
-              key={room.localParticipant.sid}
-              participant={room.localParticipant}
-            />
-          </div>
+          <Participant
+            key={room.localParticipant.sid}
+            participant={room.localParticipant}
+          />
         ) : (
           ""
         )}
-        <div className="remote-participants">{remoteParticipants}</div>
+        {remoteParticipants}
       </div>
-
       <button
         id="leaveRoom"
         onClick={handleLogout}
