@@ -1,5 +1,7 @@
 <h1 align="center">EmoFace</h1>
 
+[**Play EmoFace here!**](https://emoface-jupiter.herokuapp.com/)
+
 <p align="center">*This repository was created during our time as students at Code Chrysalis.</p><br>
 
 ## 1. About
